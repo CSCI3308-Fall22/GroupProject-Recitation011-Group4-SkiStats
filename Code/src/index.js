@@ -83,6 +83,25 @@ app.post("/login", async (req, res) => {
         })
 });
 
+app.get('/register', (req, res) => {
+    res.render('pages/register', {});
+  });
+  
+app.post('/register', async (req, res) => {
+const hash = await bcrypt.hash(req.body.password, 10);
+const query = 'insert into users (username, password) VALUES ($1, $2) RETURNING * ;';
+db.any(query, [
+    req.body.username,
+    hash,
+])
+    .then(function (data) {
+    res.redirect("/login");
+    })
+    .catch(function (err) {
+    res.status(400).send(err);
+    });
+});
+
 const auth = (req, res, next) => {
     if (!req.session.user) {
         return res.redirect("/register");
