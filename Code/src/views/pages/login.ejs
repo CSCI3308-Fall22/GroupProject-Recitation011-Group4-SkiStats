@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="flex justify-center self-center  z-10">
-            <div class="p-12 bg-white mx-auto rounded-2xl w-100 ">
+        <div class="p-12 bg-white mx-auto rounded-2xl w-100 " id="form-field">
                 <div class="col"><%- include ('../partials/message') %></div>
                 <div class="mb-4">
                     <h3 class="font-semibold text-2xl text-gray-800">Sign In </h3>
@@ -47,10 +47,12 @@
 </div>
 
 <style>
+    #form-field{
+        box-shadow: 20px 20px 0px #93c5fd;
+    }
     .intro {
         text-shadow: 3px 3px 0px #60a5fa;
     }
-
     .register-link {
         color: #60a5fa;
     }
