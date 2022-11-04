@@ -52,7 +52,7 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const query = `select * from "Users";`;
+    const query = `select * from "Users" where username = $1;`;
     db.any(query, [req.body.username])
         .then(async user => {
             bcrypt.compare(req.body.password, user[0].password)
