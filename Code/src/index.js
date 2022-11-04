@@ -52,7 +52,7 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const query = `select password from users where username = $1;`;
+    const query = `select * from "Users";`;
     db.any(query, [req.body.username])
         .then(async user => {
             bcrypt.compare(req.body.password, user[0].password)
@@ -89,7 +89,7 @@ app.get('/register', (req, res) => {
   
 app.post('/register', async (req, res) => {
 const hash = await bcrypt.hash(req.body.password, 10);
-const query = 'insert into users (username, password) VALUES ($1, $2) RETURNING * ;';
+const query = 'INSERT INTO Users (username, password) VALUES ($1, $2) RETURNING * ;';
 db.any(query, [
     req.body.username,
     hash,
