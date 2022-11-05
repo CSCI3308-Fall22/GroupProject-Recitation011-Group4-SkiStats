@@ -11,25 +11,13 @@ CREATE TABLE "ski_mountains" (
 
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
-  "admin" BOOLEAN NOT NULL,
+  "is_admin" BOOLEAN NOT NULL,
   "username" TEXT UNIQUE NOT NULL,
   "password" TEXT NOT NULL,
   "name" TEXT,
   "home_address" TEXT,
-  "account_created_at" TIMESTAMP NOT NULL
+  "account_created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TABLE "skimountain_user" (
-  "skimountain" INTEGER NOT NULL,
-  "user" INTEGER NOT NULL,
-  PRIMARY KEY ("skimountain", "user")
-);
-
-CREATE INDEX "idx_skimountain_user" ON "skimountain_user" ("user");
-
-ALTER TABLE "skimountain_user" ADD CONSTRAINT "fk_skimountain_user__skimountain" FOREIGN KEY ("skimountain") REFERENCES "ski_mountains" ("id");
-
-ALTER TABLE "skimountain_user" ADD CONSTRAINT "fk_skimountain_user__user" FOREIGN KEY ("user") REFERENCES "users" ("id")
 
 CREATE TABLE "trails" (
   "id" SERIAL PRIMARY KEY,
