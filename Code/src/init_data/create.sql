@@ -1,4 +1,4 @@
-CREATE TABLE "SkiMountains" (
+CREATE TABLE "ski_mountains" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT NOT NULL,
   "description" TEXT NOT NULL,
@@ -9,37 +9,23 @@ CREATE TABLE "SkiMountains" (
   "resort" TEXT NOT NULL
 );
 
-CREATE TABLE "Users" (
+CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
+  "is_admin" BOOLEAN NOT NULL,
   "username" TEXT UNIQUE NOT NULL,
   "password" TEXT NOT NULL,
-  "admin" BOOLEAN NOT NULL,
-  "home_address" TEXT NOT NULL,
-  "first_name" TEXT NOT NULL,
-  "last_name" TEXT NOT NULL,
-  "profile_picture" BOOLEAN,
-  "account_created_at" TIMESTAMP NOT NULL
+  "name" TEXT,
+  "home_address" TEXT,
+  "account_created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "skimountain_user" (
-  "skimountain" INTEGER NOT NULL,
-  "user" INTEGER NOT NULL,
-  PRIMARY KEY ("skimountain", "user")
-);
-
-CREATE INDEX "idx_skimountain_user" ON "skimountain_user" ("user");
-
-ALTER TABLE "skimountain_user" ADD CONSTRAINT "fk_skimountain_user__skimountain" FOREIGN KEY ("skimountain") REFERENCES "SkiMountains" ("id");
-
-ALTER TABLE "skimountain_user" ADD CONSTRAINT "fk_skimountain_user__user" FOREIGN KEY ("user") REFERENCES "Users" ("id");
-
-CREATE TABLE "trail" (
+CREATE TABLE "trails" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT NOT NULL,
   "difficulty" DOUBLE PRECISION NOT NULL,
   "ski_mountain" INTEGER NOT NULL
 );
 
-CREATE INDEX "idx_trail__ski_mountain" ON "trail" ("ski_mountain");
+CREATE INDEX "idx_trails__ski_mountain" ON "trails" ("ski_mountain");
 
-ALTER TABLE "trail" ADD CONSTRAINT "fk_trail__ski_mountain" FOREIGN KEY ("ski_mountain") REFERENCES "SkiMountains" ("id") ON DELETE CASCADE
+ALTER TABLE "trails" ADD CONSTRAINT "fk_trails__ski_mountain" FOREIGN KEY ("ski_mountain") REFERENCES "ski_mountains" ("id") ON DELETE CASCADE;
