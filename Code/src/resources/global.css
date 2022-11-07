@@ -5,3 +5,7 @@ input{
 button{
     display:flex;
 }
+
+body{
+    font-family: Tahoma, sans-serif;
+}

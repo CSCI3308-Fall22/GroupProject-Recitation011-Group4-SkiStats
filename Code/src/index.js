@@ -51,6 +51,11 @@ app.get("/login", (req, res) => {
     res.render("pages/login");
 });
 
+app.get("/discovery", (req, res) => {
+    res.render("pages/discovery");
+});
+
+
 app.post("/login", async (req, res) => {
     const query = `select password from users where username = $1;`;
     db.any(query, [req.body.username])
