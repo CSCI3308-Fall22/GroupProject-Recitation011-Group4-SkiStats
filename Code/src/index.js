@@ -4,7 +4,6 @@ const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-const axios = require('axios');
 
 // DB Configuration
 const dbConfig = {
@@ -52,7 +51,7 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const query = `select * from "Users" where username = $1;`;
+    const query = `select * from users where username = $1;`;
     db.any(query, [req.body.username])
         .then(async user => {
             bcrypt.compare(req.body.password, user[0].password)
@@ -60,11 +59,6 @@ app.post("/login", async (req, res) => {
                     if (!match) {
                         throw new Error("Incorrect username or password.");
                     }
-                    req.session.user = {
-                        api_key: process.env.API_KEY,
-                    };
-                    req.session.save();
-                    res.redirect("/home");
                 })
                 .catch(err => {
                     res.render("pages/login", {
