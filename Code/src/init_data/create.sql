@@ -13,12 +13,11 @@ CREATE TABLE "Users" (
   "id" SERIAL PRIMARY KEY,
   "username" TEXT UNIQUE NOT NULL,
   "password" TEXT NOT NULL,
-  "admin" BOOLEAN NOT NULL,
+  "admin" BOOLEAN,
   "home_address" TEXT NOT NULL,
   "first_name" TEXT NOT NULL,
   "last_name" TEXT NOT NULL,
   "profile_picture" BOOLEAN,
-  "account_created_at" TIMESTAMP NOT NULL
 );
 
 CREATE TABLE "skimountain_user" (
