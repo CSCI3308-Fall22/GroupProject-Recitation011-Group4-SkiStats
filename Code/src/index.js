@@ -26,6 +26,13 @@ db.connect()
         console.log("ERROR:", error.message || error);
     });
 
+// Create the Admin user
+let password = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
+db.none("INSERT INTO users(username,password,is_admin) VALUES ($1, $2, TRUE) ON CONFLICT DO NOTHING", [
+  process.env.ADMIN_USERNAME,
+  password,
+]);
+
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(
