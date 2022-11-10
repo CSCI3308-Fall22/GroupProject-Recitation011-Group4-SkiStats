@@ -108,6 +108,32 @@ app.post("/login", async (req, res) => {
         })
 });
 
+app.get("/discovery", (req, res) => {
+    res.render("pages/discovery");
+});
+
+
+app.get('/register', (req, res) => {
+    res.render('pages/register', {});
+});
+  
+app.post('/register', async (req, res) => {
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const query = 'INSERT INTO users (name, home_address, username, password) VALUES ($1, $2, $3, $4) RETURNING * ;';
+            db.any(query, [
+                req.body.name,
+                req.body.home_address,
+                req.body.username,
+                hash,
+            ])
+                .then(function (data) {
+                res.redirect("/login");
+                })
+                .catch(function (err) {
+                res.render("pages/register",{error: err ,message:"Email already attached to an account!"})
+                });
+    });
+
 // Authentication middleware
 const auth = (req, res, next) => {
     if (!req.session.user) {
@@ -116,11 +142,6 @@ const auth = (req, res, next) => {
     next();
 };
 app.use(auth);
-
-app.get("/discovery", (req, res) => {
-    res.render("pages/discovery");
-});
-
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
