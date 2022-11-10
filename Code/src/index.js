@@ -5,6 +5,16 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 
+// User variable for sessions
+const user = {
+    user_id: undefined,
+    is_admin: undefined,
+    username: undefined,
+    name: undefined,
+    home_address: undefined,
+    account_created: undefined,
+};
+
 // DB Configuration
 const dbConfig = {
     host: 'db',
@@ -35,11 +45,12 @@ db.none("INSERT INTO users(username,password,is_admin) VALUES ($1, $2, TRUE) ON 
 
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
+// Set session
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
-        saveUninitialized: false,
-        resave: false,
+        saveUninitialized: true,
+        resave: true,
     })
 );
 app.use(
@@ -50,7 +61,11 @@ app.use(
 
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
-    res.redirect("/login");
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+    } else {
+        res.redirect("/discovery");
+    }
 });
 
 app.get("/login", (req, res) => {
@@ -60,12 +75,23 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
     const query = `select * from users where username = $1;`;
     db.any(query, [req.body.username])
-        .then(async user => {
-            bcrypt.compare(req.body.password, user[0].password)
+        .then(async data => {
+            bcrypt.compare(req.body.password, data[0].password)
                 .then(match => {
                     if (!match) {
                         throw new Error("Incorrect username or password.");
                     }
+                    user.user_id = data[0].id;
+                    user.is_admin = data[0].is_admin;
+                    user.username = data[0].username;
+                    user.name = data[0].name;
+                    user.home_address = data[0].home_address;
+                    user.account_created = data[0].account_created_at;
+
+                    req.session.user = user;
+                    req.session.save();
+
+                    res.redirect("/discovery");
                 })
                 .catch(err => {
                     res.render("pages/login", {
@@ -74,8 +100,7 @@ app.post("/login", async (req, res) => {
                     })
                 })
         })
-        .catch(err => {
-            console.log(err);
+        .catch(_ => {
             res.render("pages/login", {
                 error: true,
                 message: "Incorrect username or password."
@@ -83,21 +108,24 @@ app.post("/login", async (req, res) => {
         })
 });
 
-app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.render('pages/login');
-  });
-  
-
+// Authentication middleware
 const auth = (req, res, next) => {
     if (!req.session.user) {
-        return res.redirect("/register");
+        return res.redirect("/login");
     }
     next();
 };
-
 app.use(auth);
 
+app.get("/discovery", (req, res) => {
+    res.render("pages/discovery");
+});
+
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.render('pages/login');
+});
 
 app.listen(3000);
 console.log("Server is listening on port 3000...");
