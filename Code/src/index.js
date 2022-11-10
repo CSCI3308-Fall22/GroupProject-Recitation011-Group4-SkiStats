@@ -83,6 +83,12 @@ app.post("/login", async (req, res) => {
         })
 });
 
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.render('pages/login');
+  });
+  
+
 const auth = (req, res, next) => {
     if (!req.session.user) {
         return res.redirect("/register");
