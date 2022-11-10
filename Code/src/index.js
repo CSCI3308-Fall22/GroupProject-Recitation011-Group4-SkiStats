@@ -76,6 +76,16 @@ app.post("/login", async (req, res) => {
         })
 });
 
+app.get("/profile", (req, res) => {
+    res.render("pages/profile");
+});
+
+app.get("/cart", (req, res) => {
+    res.render("pages/cart");
+});
+
+
+
 app.get('/logout', (req, res) => {
     req.session.destroy();
     res.render('pages/login');
