@@ -1,0 +1,42 @@
+
+<div>
+<hr>
+<div id = locat></div>
+<script>
+    var x = document.getElementById("locat");
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+    
+    function showPosition(position) {
+      x.innerHTML = "Latitude: " + position.coords.latitude +
+      "<br>Longitude: " + position.coords.longitude;
+      f = document.getElementById('t');
+      f.innerHTML = position.coords.longitude;
+      
+    }
+    getLocation();
+    </script>
+  <h1>data:<%= data  %></h1>
+   hh
+    <div class="grid h-screen place-items-center" id ='t'>
+        <div class = default-carousel" class="relative" data-carousel="static">
+        <script> 
+        f = document.getElementById('t');
+        bel= document.createElement('div');
+            bel.innerHTML = 'foola';
+            f.appendChild(bel);
+        for (let i = 0; i < 3; i++){
+            tel= document.createElement('div');
+            tel.innerHTML = 'foola';
+            event_element = document.createElement('div'); // @TODO: create a new div element
+        event_element.classList = 'id="default-carousel" class="relative" data-carousel="static"';
+        }</script>
+<p1>boomer</p1>
+</div>
+<hr>
+</div>

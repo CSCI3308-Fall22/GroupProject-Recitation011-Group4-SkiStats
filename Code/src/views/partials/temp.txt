@@ -1,0 +1,24 @@
+        {
+            "type": "amadeusOAuth2Token",
+            "username": "kobesmall12@gmail.com",
+            "application_name": "groupproject",
+            "client_id": "KRGf6smGxGSlIkpof8ijvVA3N55JuWmE",
+            "token_type": "Bearer",
+            "access_token": "AP6SeubTBEOECQJ8QiM7qt6gGNjz",
+            "expires_in": 1799,
+            "state": "approved",
+            "scope": ""
+        }
+
+           {
+            "type": "amadeusOAuth2Token",
+            "username": "kobesmall12@gmail.com",
+            "application_name": "groupproject",
+            "client_id": "KRGf6smGxGSlIkpof8ijvVA3N55JuWmE",
+            "token_type": "Bearer",
+            "access_token": "toOBHaDLgGDGIGV6hGoEZRHCC98V",
+            "expires_in": 1799,
+            "state": "approved",
+            "scope": ""
+        }
+        %  
