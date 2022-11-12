@@ -59,6 +59,11 @@ app.use(
     })
 );
 
+app.use(function(req, res, next) {
+    res.locals.user = req.session.user;
+    next();
+  });
+
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
     if (req.session.user === undefined) {
@@ -145,7 +150,7 @@ app.use(auth);
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.render('pages/login');
+    res.redirect('/');
 });
 
 app.listen(3000);
