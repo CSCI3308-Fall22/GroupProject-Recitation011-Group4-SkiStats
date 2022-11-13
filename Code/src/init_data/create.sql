@@ -1,12 +1,9 @@
 CREATE TABLE "ski_mountains" (
-  "id" SERIAL PRIMARY KEY,
-  "name" TEXT NOT NULL,
-  "description" TEXT NOT NULL,
-  "website" TEXT UNIQUE NOT NULL,
-  "address" TEXT UNIQUE NOT NULL,
-  "latitude" DOUBLE PRECISION NOT NULL,
-  "longitude" DOUBLE PRECISION NOT NULL,
-  "resort" TEXT NOT NULL
+  "State" VARCHAR,
+  "Name" VARCHAR PRIMARY KEY,
+  "Pass" VARCHAR,
+  "Total_runs" INTEGER,
+  "Ease" VARCHAR
 );
 
 CREATE TABLE "users" (
