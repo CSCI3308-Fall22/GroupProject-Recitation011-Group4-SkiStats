@@ -3,6 +3,7 @@ INSERT INTO
 VALUES
     (true, 'admin', 'admin');
 
+
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('utah','Alta','Ikon',119,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Arapahoe Basin','Ikon',147,'7%');
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Aspen Snowmass','Ikon',336,NULL);

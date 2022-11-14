@@ -59,6 +59,11 @@ app.use(
     })
 );
 
+app.use(function(req, res, next) {
+    res.locals.user = req.session.user;
+    next();
+  });
+
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
     if (req.session.user === undefined) {
@@ -70,6 +75,51 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) => {
     res.render("pages/login");
+});
+
+app.get("/account-settings", (req, res) => {
+  if (req.session.user === undefined) {
+    res.redirect("/login");
+  } else {
+    res.render("pages/account-settings");
+  }
+});
+
+app.post("/account-settings", async (req, res) => {
+  if (req.body.passwordField) {
+    var hash = await bcrypt.hash(req.body.passwordField, 10);
+    var query =
+      "UPDATE users SET name=$1, home_address=$2, username=$3, password=$4 WHERE username = $5";
+  } else {
+    var hash = "";
+    var query =
+      "UPDATE users SET name=$1, home_address=$2, username=$3 WHERE username = $5";
+  }
+
+  db.none(query, [
+    req.body.nameField || null,
+    req.body.addressField || null,
+    req.body.emailField,
+    hash,
+    req.session.user.username,
+  ])
+    .then(function () {
+      req.session.user.username = req.body.emailField;
+      req.session.user.name = req.body.nameField;
+      req.session.user.home_address = req.body.addressField;
+      req.session.save();
+
+      res.render("pages/account-settings", {
+        message: "Account details updated successfully!",
+      });
+    })
+    .catch(function (err) {
+      console.log(err);
+      res.render("pages/account-settings", {
+        error: true,
+        message: "Failed to update account details!",
+      });
+    });
 });
 
 app.post("/login", async (req, res) => {
@@ -199,11 +249,38 @@ const auth = (req, res, next) => {
     }
     next();
 };
+
+const getHotel = async (lat, long) => {
+    console.log('ingetHotel')
+    axios({
+      url: `test.api.amadeus.com/reference-data/locations/hotels/by-geocode`,
+          method: 'GET',
+          dataType:'json',
+          headers: {
+            "Authorization" : 'Bearer' + 'api_key'
+          },
+          params: {
+              "latitude": 0,
+              "longitude": 0,
+              'radius': 15
+          }
+      })
+      .then(res => {
+          res.data,
+          console.log('inresponse')
+          console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err);
+        res.redirect('/');
+      })
+      };
+
 app.use(auth);
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.render('pages/login');
+    res.redirect('/');
 });
 
 app.listen(3000);
