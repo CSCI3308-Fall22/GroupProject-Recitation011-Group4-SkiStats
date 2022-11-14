@@ -1,8 +1,65 @@
 11/14/122 2PM MST
 
 Location: 
-
+CSEL
 Work Completed
+Zap:
+    Filter front end drawer work completed 
+    Ikon epic both
+    Back end working on postman
+    Postman request is working
+    PRIORITY 1: GET EVERYTHING TO MAIN ASAP
 
+Andrew:
+    Made user session variables, dynamic modal and fitting that into discover and getting the API calls to load near hotels
+    Embedded into google 
+
+Logan: 
+    Admin work is fixed, functions to find distance and travels time from google, were putting this. Account Details is finished and pre populated and working
+
+Koral:
+    Worked on the wishlist and functionality in the database, broken as of right now 
+
+Jacob:
+    Cleaning up API calls, mass insert of all ski data
+
+Kobe: 
+    Worked on API to finish, close to finishing
 
 Work Assigned
+Zap:
+    Discover page
+
+Andrew: 
+    Resort side of the modal
+
+Logan: 
+    Use previous work and populate how long it would take to get to mountai/ resort based on function
+    Wishlist page to get direction and save, only if you want to go there
+    Get directions user working 
+
+Koral:
+    Cart page
+
+Jacob:
+    Weather API call functionality
+
+Kobe:
+    Continuing hotel API work
+
+
+Project Board Update Notes
+    We all need to be updated on merges
+    After login, you can see hotels, mountains and wishlist 
+    Home page is different from discover page now
+    Discover page can direct to ski resort page and hotel page where we mention weather modals, etc
+
+    CART table
+
+    Thinking we need to have less in modal, make it look like more work
+    Checkout system?
+    finish in steps 1) ski mountain and map 2) hotel 3) save 
+
+    Multipage modal for this idea
+
+    Sit down merge code, finish release notes that are automated.
