@@ -1,0 +1,7 @@
+10/31/22 2PM mst
+
+Standup Meeting
+Discussed basic fromat of website
+Covered basic schematics of database
+Assigned login and register pages
+Began API calls work

@@ -1,0 +1,50 @@
+<div class="navbar bg-base-100">
+  <div class="navbar-start">
+    <a class="btn btn-ghost normal-case text-xl" href="/">SkiStats</a>
+  </div>
+
+  <div class="navbar-center">
+    <a class="btn btn-ghost normal-case text-xl" href="/discovery">Discover</a>
+  </div>
+
+  <div class="navbar-end">
+    <% if (locals.user) { %>
+    <a class="btn btn-ghost normal-case" href="/wishlist">Wishlist</a>
+
+    <div class="dropdown dropdown-end dropdown-hover">
+      <label tabindex="0" class="btn btn-ghost normal-case rounded-btn">
+        <%= user.name || user.username %>
+        <svg
+          class="fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+          />
+        </svg>
+      </label>
+
+      <ul
+        tabindex="0"
+        class="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box w-52"
+      >
+      <li>
+        <a href="/account-settings">Account Settings</a>
+      </li>
+        <li>
+          <a href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    <% } else { %>
+    <label tabindex="0" class="btn btn-ghost rounded-btn">
+      <a href="/login">Login</a>
+    </label>
+
+    <% }%>
+  </div>
+</div>

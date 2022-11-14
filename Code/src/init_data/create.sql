@@ -8,7 +8,7 @@ CREATE TABLE "ski_mountains" (
 
 CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
-  "is_admin" BOOLEAN NOT NULL,
+  "is_admin" BOOLEAN NOT NULL DEFAULT FALSE,
   "username" TEXT UNIQUE NOT NULL,
   "password" TEXT NOT NULL,
   "name" TEXT,

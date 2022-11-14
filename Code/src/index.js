@@ -4,7 +4,16 @@ const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-// const axios = require('axios'); // Will be needed for future API calls.
+
+// User variable for sessions
+const user = {
+    user_id: undefined,
+    is_admin: undefined,
+    username: undefined,
+    name: undefined,
+    home_address: undefined,
+    account_created: undefined,
+};
 
 // DB Configuration
 const dbConfig = {
@@ -27,13 +36,21 @@ db.connect()
         console.log("ERROR:", error.message || error);
     });
 
+// Create the Admin user
+let password = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
+db.none("INSERT INTO users(username,password,is_admin) VALUES ($1, $2, TRUE) ON CONFLICT DO NOTHING", [
+  process.env.ADMIN_USERNAME,
+  password,
+]);
+
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
+// Set session
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
-        saveUninitialized: false,
-        resave: false,
+        saveUninitialized: true,
+        resave: true,
     })
 );
 app.use(
@@ -42,40 +59,98 @@ app.use(
     })
 );
 
+app.use(function(req, res, next) {
+    res.locals.user = req.session.user;
+    next();
+  });
+
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
-    res.redirect("/login");
+    if (req.session.user === undefined) {
+        res.redirect("/login");
+    } else {
+        res.redirect("/discovery");
+    }
 });
 
 app.get("/login", (req, res) => {
     res.render("pages/login");
 });
 
+app.get("/account-settings", (req, res) => {
+  if (req.session.user === undefined) {
+    res.redirect("/login");
+  } else {
+    res.render("pages/account-settings");
+  }
+});
+
+app.post("/account-settings", async (req, res) => {
+  if (req.body.passwordField) {
+    var hash = await bcrypt.hash(req.body.passwordField, 10);
+    var query =
+      "UPDATE users SET name=$1, home_address=$2, username=$3, password=$4 WHERE username = $5";
+  } else {
+    var hash = "";
+    var query =
+      "UPDATE users SET name=$1, home_address=$2, username=$3 WHERE username = $5";
+  }
+
+  db.none(query, [
+    req.body.nameField || null,
+    req.body.addressField || null,
+    req.body.emailField,
+    hash,
+    req.session.user.username,
+  ])
+    .then(function () {
+      req.session.user.username = req.body.emailField;
+      req.session.user.name = req.body.nameField;
+      req.session.user.home_address = req.body.addressField;
+      req.session.save();
+
+      res.render("pages/account-settings", {
+        message: "Account details updated successfully!",
+      });
+    })
+    .catch(function (err) {
+      console.log(err);
+      res.render("pages/account-settings", {
+        error: true,
+        message: "Failed to update account details!",
+      });
+    });
+});
+
 app.post("/login", async (req, res) => {
-    const query = `select password from users where username = $1;`;
+    const query = `select * from users where username = $1;`;
     db.any(query, [req.body.username])
-        .then(async user => {
-            bcrypt.compare(req.body.password, user[0].password)
+        .then(async data => {
+            bcrypt.compare(req.body.password, data[0].password)
                 .then(match => {
                     if (!match) {
                         throw new Error("Incorrect username or password.");
                     }
-                    req.session.user = {
-                        api_key: process.env.API_KEY,
-                    };
+                    user.user_id = data[0].id;
+                    user.is_admin = data[0].is_admin;
+                    user.username = data[0].username;
+                    user.name = data[0].name;
+                    user.home_address = data[0].home_address;
+                    user.account_created = data[0].account_created_at;
+
+                    req.session.user = user;
                     req.session.save();
-                    res.redirect("/home");
+
+                    res.redirect("/discovery");
                 })
                 .catch(err => {
-                    console.log(err);
                     res.render("pages/login", {
                         error: true,
                         message: err.message
                     })
                 })
         })
-        .catch(err => {
-            console.log(err);
+        .catch(_ => {
             res.render("pages/login", {
                 error: true,
                 message: "Incorrect username or password."
@@ -83,9 +158,36 @@ app.post("/login", async (req, res) => {
         })
 });
 
+app.get("/discovery", (req, res) => {
+    res.render("pages/discovery");
+});
+
+
+app.get('/register', (req, res) => {
+    res.render('pages/register', {});
+});
+  
+app.post('/register', async (req, res) => {
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const query = 'INSERT INTO users (name, home_address, username, password) VALUES ($1, $2, $3, $4) RETURNING * ;';
+            db.any(query, [
+                req.body.name,
+                req.body.home_address,
+                req.body.username,
+                hash,
+            ])
+                .then(function (data) {
+                res.redirect("/login");
+                })
+                .catch(function (err) {
+                res.render("pages/register",{error: err ,message:"Email already attached to an account!"})
+                });
+    });
+
+// Authentication middleware
 const auth = (req, res, next) => {
     if (!req.session.user) {
-        return res.redirect("/register");
+        return res.redirect("/login");
     }
     next();
 };
@@ -118,6 +220,10 @@ const getHotel = async (lat, long) => {
 
 app.use(auth);
 
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
 
 app.listen(3000);
 console.log("Server is listening on port 3000...");
