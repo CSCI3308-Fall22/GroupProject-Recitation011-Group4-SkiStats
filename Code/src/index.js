@@ -130,11 +130,9 @@ app.post("/login", async (req, res) => {
                 .then(match => {
                     if (!match) {
                         throw new Error("Incorrect username or password.");
-                    }else{
-                        req.session.userID=user.id;
-                        req.session.save();
                     }
                     user.user_id = data[0].id;
+                    console.log(user.user_id);
                     user.is_admin = data[0].is_admin;
                     user.username = data[0].username;
                     user.name = data[0].name;
@@ -161,37 +159,6 @@ app.post("/login", async (req, res) => {
         })
 });
 
-app.get("/profile", (req, res) => {
-    res.render("pages/profile");
-});
-
-app.get("/cart", (req, res) => {
-    var query = "SELECT * FROM cart WHERE userID = $1";
-   // console.log(query);
-
-    db.any(query, [req.session.userID])
-      .then(cart => {
-        console.log(cart.userID);
-        res.render("pages/cart", {
-            cart: cart,
-        });
-      })
-      .catch(err => {
-        res.render('pages/cart', {
-          cart: [],
-          error: true,
-          message: err.message,
-        });
-      });
-});
-
-
-
-app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.render('pages/login');
-  });
-  
 app.get("/discovery", (req, res) => {
     res.render("pages/discovery");
 });
@@ -251,6 +218,25 @@ const getHotel = async (lat, long) => {
         res.redirect('/');
       })
       };
+
+app.get("/cart", (req, res) => {
+  var query = "SELECT * FROM cart WHERE userID = $1";
+
+  db.any(query, [req.session.user.user_id])
+    .then(cart => {
+      console.log(cart.userID);
+      res.render("pages/cart", {
+          cart: cart,
+      });
+    })
+    .catch(err => {
+      res.render('pages/cart', {
+        cart: [],
+        error: true,
+        message: err.message,
+      });
+    });
+});
 
 app.use(auth);
 
