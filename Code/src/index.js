@@ -134,6 +134,58 @@ app.post('/register', async (req, res) => {
                 });
     });
 
+app.get('/filter', function (req, res) {
+    var dif= Boolean(req.body.difficulty);
+    var avg= Boolean(req.body.avg_rating);
+    var ele= Boolean(req.body.elevation_gain);
+    var loc= String(req.body.location);
+    
+    var query="SELECT * from users";
+    var notFirst=0;
+    var check=0;
+
+    if(loc!=""){
+        query+=" WHERE location = $1";
+        check=1;
+    }
+    if(dif==1){
+        if(notFirst==0)query+=" ORDER BY";
+        query+=" difficulty DESC";
+        notFirst=1;
+    }
+    if(avg==1){
+        if(notFirst==0)query+=" ORDER BY";
+        if(notFirst==1) query+=",";
+        query+=" avg_rating DESC";
+        notFirst=1;
+    }
+    if(ele==1){
+        if(notFirst==0)query+=" ORDER BY";
+        if(notFirst==1) query+=",";
+        query+=" elevation_gain DESC";
+        notFirst=1;
+    }
+    query+=";";
+    if(check==1){
+        db.any(query,[req.body.location])
+        .then(function (rows) {
+        res.send(rows);
+        })
+        .catch(function (err) {
+        console.log(err);
+        });
+    }
+    else{
+        db.any(query)
+        .then(function (rows) {
+        res.send(rows);
+        })
+        .catch(function (err) {
+        console.log(err);
+        });
+    }
+    });
+
 // Authentication middleware
 const auth = (req, res, next) => {
     if (!req.session.user) {
