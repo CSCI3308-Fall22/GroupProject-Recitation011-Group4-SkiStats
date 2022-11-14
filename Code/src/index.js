@@ -74,32 +74,34 @@ const getHotel = async (lat, long) => {
 */
 
 
+const a = {
+    url : 'https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode',
+   method: 'GET',
+   dataType:'json',
+   headers: {
+       "Authorization" : 'Bearer ' + '6BpXOA9cVw5lBM64WUADsYauKYN3'
+   },
+   params: {
+       "latitude":40.01925,
+       "longitude":-105.2640669
+   }
+}
+/*
 const getHotel = async (lat, long) => {
     console.log('ingetHotel');
-    axios({
-     url : 'https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode',
-    method: 'GET',
-    dataType:'json',
-    headers: {
-        "Authorization" : 'Bearer ' + 'toOBHaDLgGDGIGV6hGoEZRHCC98V'
-    },
-    params: {
-        "latitude":41.397158,
-        "longitude": 2.160873
-    }
-}).then((res) => {
-  
-        res.data,
+    axios(a).then((results) => {
+        data:res.data,
+        res.render("pages/discovery",{data:res.data});
         console.log('inrespons')
         console.log(res.data)
     }
         )
     .catch(function (error) {
       console.log(error);
-    });
+    })
     
 };
-
+*/
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
     res.redirect("/login");
@@ -147,14 +149,27 @@ app.get('/logout', (req, res) => {
         api_key: process.env.API_KEY,
       };
       req.session.save();
-      
-     getHotel();
+
+      //const getHotel = async (lat, long) => {
+       // console.log('ingetHotel');
+        axios(a).then((results) => {
+            console.log(results.data)
+            res.render("pages/discovery",{data:results.data});
+        }
+            )
+        .catch(function (error) {
+          console.log(error);
+        })
+        
+    //};      
+     //getHotel();
       console.log('boola');
      // console.log(res.data);
-   res.render('pages/discovery',{
-    data:res.data,
+
+   //res.render('pages/discovery',{
+   // data:res.data,
     
-    });
+   //});
     
   });
   
