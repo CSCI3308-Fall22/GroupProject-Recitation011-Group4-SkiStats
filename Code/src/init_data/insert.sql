@@ -90,4 +90,29 @@ INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('michigan','Mt
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('trentino','Pejo','Epic',20,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('trentino','Pinzolo','Epic',31.4,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Telluride','Epic',147,'16%');
-INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
+-- INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
+
+INSERT INTO ski_mountain(State, Name, Pass,Total_runs, Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
+
+
+-- CREATE TABLE users (
+--   id SERIAL PRIMARY KEY,
+--   is_admin BOOLEAN NOT NULL,
+--   username TEXT UNIQUE NOT NULL,
+--   password TEXT NOT NULL,
+--   name TEXT,
+--   home_address TEXT,
+--   account_created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+-- );
+
+INSERT INTO users(is_admin, username, password, name, home_address, account_created_at) VALUES (true, 'koral', 'koral', '', '', '');
+
+-- CREATE TABLE cart (
+--   id SERIAL PRIMARY KEY,
+--   userID INTEGER NOT NULL,
+--   ski_mountainID INTEGER NOT NULL,
+--   FOREIGN KEY (userID) REFERENCES users (id),
+--   FOREIGN KEY (ski_mountainID) REFERENCES ski_mountain (id)
+-- );
+
+INSERT INTO cart(userID, ski_mountainID) VALUES (2, 86);

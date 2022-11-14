@@ -81,7 +81,23 @@ app.get("/profile", (req, res) => {
 });
 
 app.get("/cart", (req, res) => {
-    res.render("pages/cart");
+    var query = "SELECT * FROM cart WHERE userID = $1";
+
+    db.any(query, [req.session.userID])
+      .then(cart => {
+        console.log(cart);
+        console.log(cart.userID);
+        res.render("pages/cart", {
+            cart: cart,
+        });
+      })
+      .catch(err => {
+        res.render('pages/cart', {
+          cart: [],
+          error: true,
+          message: err.message,
+        });
+      });
 });
 
 
