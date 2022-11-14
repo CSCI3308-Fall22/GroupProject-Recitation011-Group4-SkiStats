@@ -140,7 +140,7 @@ app.get('/filter', function (req, res) {
     var ele= Boolean(req.body.elevation_gain);
     var loc= String(req.body.location);
     
-    var query="SELECT * from users";
+    var query="SELECT * from ski_mountain";
     var notFirst=0;
     var check=0;
 
