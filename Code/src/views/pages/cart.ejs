@@ -4,25 +4,31 @@
 
 <main>
     <form method = "POST" action = "/cart">
-        <div class="carousel w-full">
-            <div id="item1" class="carousel-item w-full">
-              <img src="https://placeimg.com/800/200/arch" class="w-full" />
-            </div> 
-            <div id="item2" class="carousel-item w-full">
-              <img src="https://placeimg.com/800/200/arch" class="w-full" />
-            </div> 
-            <div id="item3" class="carousel-item w-full">
-              <img src="https://placeimg.com/800/200/arch" class="w-full" />
-            </div> 
-            <div id="item4" class="carousel-item w-full">
-              <img src="https://placeimg.com/800/200/arch" class="w-full" />
-            </div>
-          </div> 
-          <div class="flex justify-center w-full py-2 gap-2">
-            <a href="#item1" class="btn btn-xs">1</a> 
-            <a href="#item2" class="btn btn-xs">2</a> 
-            <a href="#item3" class="btn btn-xs">3</a> 
-            <a href="#item4" class="btn btn-xs">4</a>
+        <div class="overflow-x-auto">
+            <table class="table w-full">
+              <!-- head -->
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Mountain</th>
+                  <th>Location</th>
+                  <th>Pass</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (var i = 0; i < ski_mountain.length; i++){ %>
+                <tr>
+                  <th></th>
+                  <td><%= ski_mountain[i].name %></td>
+                  <td><%= ski_mountain[i].state %></td>
+                  <td><%= ski_mountain[i].Pass %></td>
+                  <td><button class="btn btn-circle btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
     </form>
 </main>

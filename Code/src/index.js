@@ -94,7 +94,7 @@ app.get('/logout', (req, res) => {
 
 const auth = (req, res, next) => {
     if (!req.session.user) {
-        return res.redirect("/register");
+        return res.redirect("/cart");
     }
     next();
 };
