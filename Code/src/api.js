@@ -72,6 +72,32 @@ const getGoogleMapEmbed = function (width, height, origin, destination) {
   );
 };
 
+const getHotel = async (lat, long) => {
+  console.log('ingetHotel')
+  axios({
+    url: `test.api.amadeus.com/reference-data/locations/hotels/by-geocode`,
+        method: 'GET',
+        dataType:'json',
+        headers: {
+          "Authorization" : 'Bearer' + 'api_key'
+        },
+        params: {
+            "latitude": lat,
+            "longitude": long,
+            'radius': 15
+        }
+    })
+    .then(res => {
+        res.data,
+        console.log('inresponse')
+        console.log(res.data)
+    })
+    .catch(err => {
+      console.log(err);
+      res.redirect('/');
+    })
+    };
+
 module.exports.getWeatherData = getWeatherData;
 module.exports.getRouteDistanceTime = getRouteDistanceTime;
 module.exports.getGoogleMapEmbed = getGoogleMapEmbed;
