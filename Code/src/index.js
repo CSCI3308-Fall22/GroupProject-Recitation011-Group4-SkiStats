@@ -58,6 +58,9 @@ app.post("/login", async (req, res) => {
                 .then(match => {
                     if (!match) {
                         throw new Error("Incorrect username or password.");
+                    }else{
+                        req.session.userID=user.id;
+                        req.session.save();
                     }
                 })
                 .catch(err => {
@@ -82,10 +85,10 @@ app.get("/profile", (req, res) => {
 
 app.get("/cart", (req, res) => {
     var query = "SELECT * FROM cart WHERE userID = $1";
+   // console.log(query);
 
     db.any(query, [req.session.userID])
       .then(cart => {
-        console.log(cart);
         console.log(cart.userID);
         res.render("pages/cart", {
             cart: cart,

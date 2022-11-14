@@ -105,8 +105,6 @@ INSERT INTO ski_mountain(State, Name, Pass,Total_runs, Ease) VALUES ('wisconsin'
 --   account_created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 -- );
 
-INSERT INTO users(is_admin, username, password, name, home_address, account_created_at) VALUES (true, 'koral', 'koral', '', '', '');
-
 -- CREATE TABLE cart (
 --   id SERIAL PRIMARY KEY,
 --   userID INTEGER NOT NULL,
@@ -115,4 +113,4 @@ INSERT INTO users(is_admin, username, password, name, home_address, account_crea
 --   FOREIGN KEY (ski_mountainID) REFERENCES ski_mountain (id)
 -- );
 
-INSERT INTO cart(userID, ski_mountainID) VALUES (2, 86);
+INSERT INTO cart(userID, ski_mountainID) VALUES (1, 86);
