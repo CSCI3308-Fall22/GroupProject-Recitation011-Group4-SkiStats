@@ -184,6 +184,64 @@ app.post('/register', async (req, res) => {
                 });
     });
 
+app.get('/filter', function (req, res) {
+    var state= String(req.body.State);
+    var ease= Boolean(req.body.Ease);
+    var num_runs= Boolean(req.body.Total_runs);
+    var name= Boolean(req.body.Name);
+    var pass=String(req.body.Pass)
+    
+    var query="SELECT * from ski_mountain";
+    var notFirst=0;
+    passFlag=0;
+    if (pass=="Ikon"){
+        query+=" WHERE Pass = $1";
+        passFlag=1;
+    }
+    else if(pass=="Epic"){
+        query+=" WHERE Pass = $1";
+        passFlag=1;
+    }
+   
+    if(state!=""){
+        if(passFlag=1){
+            query+=" AND"
+        }
+        else{
+            query+=" WHERE";
+        }
+        query+=" State = $2";
+    }
+    if(ease==1){
+        if(notFirst==0)query+=" ORDER BY";
+        query+=" Ease DESC";
+        notFirst=1;
+    }
+    if(num_runs==1){
+        if(notFirst==0)query+=" ORDER BY";
+        if(notFirst==1) query+=",";
+        query+=" Total_runs DESC";
+        notFirst=1;
+    }
+    if(name==1){
+        if(notFirst==0)query+=" ORDER BY";
+        if(notFirst==1) query+=",";
+        query+=" Name DESC";
+        notFirst=1;
+    }
+    query+=";";
+        db.any(query,[
+            req.body.Pass,
+            req.body.State
+        ])
+        .then(function (rows) {
+        res.send(rows);
+        })
+        .catch(function (err) {
+        console.log(err);
+        });
+    });
+
 // Authentication middleware
 const auth = (req, res, next) => {
     if (!req.session.user) {
