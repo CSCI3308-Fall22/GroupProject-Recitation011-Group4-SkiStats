@@ -135,55 +135,61 @@ app.post('/register', async (req, res) => {
     });
 
 app.get('/filter', function (req, res) {
-    var dif= Boolean(req.body.difficulty);
-    var avg= Boolean(req.body.avg_rating);
-    var ele= Boolean(req.body.elevation_gain);
-    var loc= String(req.body.location);
+    var state= String(req.body.State);
+    var ease= Boolean(req.body.Ease);
+    var num_runs= Boolean(req.body.Total_runs);
+    var name= Boolean(req.body.Name);
+    var pass=String(req.body.Pass)
     
     var query="SELECT * from ski_mountain";
     var notFirst=0;
-    var check=0;
-
-    if(loc!=""){
-        query+=" WHERE location = $1";
-        check=1;
+    passFlag=0;
+    if (pass=="Ikon"){
+        query+=" WHERE Pass = $1";
+        passFlag=1;
     }
-    if(dif==1){
+    else if(pass=="Epic"){
+        query+=" WHERE Pass = $1";
+        passFlag=1;
+    }
+   
+    if(state!=""){
+        if(passFlag=1){
+            query+=" AND"
+        }
+        else{
+            query+=" WHERE";
+        }
+        query+=" State = $2";
+    }
+    if(ease==1){
         if(notFirst==0)query+=" ORDER BY";
-        query+=" difficulty DESC";
+        query+=" Ease DESC";
         notFirst=1;
     }
-    if(avg==1){
+    if(num_runs==1){
         if(notFirst==0)query+=" ORDER BY";
         if(notFirst==1) query+=",";
-        query+=" avg_rating DESC";
+        query+=" Total_runs DESC";
         notFirst=1;
     }
-    if(ele==1){
+    if(name==1){
         if(notFirst==0)query+=" ORDER BY";
         if(notFirst==1) query+=",";
-        query+=" elevation_gain DESC";
+        query+=" Name DESC";
         notFirst=1;
     }
     query+=";";
-    if(check==1){
-        db.any(query,[req.body.location])
+        db.any(query,[
+            req.body.Pass,
+            req.body.State
+        ])
         .then(function (rows) {
         res.send(rows);
         })
         .catch(function (err) {
         console.log(err);
         });
-    }
-    else{
-        db.any(query)
-        .then(function (rows) {
-        res.send(rows);
-        })
-        .catch(function (err) {
-        console.log(err);
-        });
-    }
     });
 
 // Authentication middleware
