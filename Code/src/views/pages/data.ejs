@@ -1,0 +1,88 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<br>
+    <h1 class="mb-4 font-extrabold tracking-tight leading-none text-center text-3xl md:text-4xl lg:text-6xl"><%= mountainData.name %></h1>
+    <div class="divider"></div>
+    <!-- picture carousel -->
+<img src=<%= mountainData.image%> alt="Mountain." />
+    </br>
+    <!-- weather stats -->
+    <h3 class="subheading mb-4 font-extrabold tracking-tight leading-none text-center text-xl md:text-2xl lg:text-4xl">Weather</h3>
+    <div class="weather-section">
+        <div class="weather-stats grid">
+            <% for (let i = 0; i < 6; i++) { %>
+                <% let weather = mountainData.forecasts[i]; %>
+                <div class="grid-flow-row shadow stats w-full">
+                    <div class="avatar">
+                        <div class="w-16 h-16 inline-block rounded-full">
+                            <img src=<%= weather.logo %> />
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title"><%= weather.dt %></div>
+                        <div class="stat-value text-primary"><%= weather.temp %><span>&#176;</span><%= weather.tempUnit %></div>
+                        <% if (weather.trend === "falling") { %>
+                            <div class="stat-desc">Temperature Trend: <span class="text-red-600 font-bold">Falling ↘</span>︎</div>
+                        <% } else { %>
+                            <div class="stat-desc">Temperature Trend: <span class="text-green-700 font-bold">Rising ↗</span></div>
+                        <% } %>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title">Winds</div>
+                        <div class="stat-value"><%= weather.windSpeed %></br><%= weather.windDir %></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title">Detailed Forecast</div>
+                        <%
+                            const chunk = (arr, size) =>
+                                Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+                                        arr.slice(i * size, i * size + size)
+                                );
+                        %>
+                        <% let detailed_forecast = chunk(weather.details.split(' '), 5); %>
+                        <% for (let i = 0; i < detailed_forecast.length; i++) { %>
+                            <div class="stat-desc detailed-forecast"><%= detailed_forecast[i].join(' ') %></div>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    img {
+        border-radius: 1%;
+        width: 50%;
+        margin: auto;
+    }
+
+    .weather-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    .weather-stats {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        column-gap: 2.5vw;
+    }
+
+    @media (max-width: 850px) {
+        .weather-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 2.5vw;
+            column-gap: 2.5vw;
+        }
+    }
+</style>

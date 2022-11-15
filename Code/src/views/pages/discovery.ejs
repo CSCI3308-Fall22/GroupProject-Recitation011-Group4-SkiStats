@@ -91,9 +91,15 @@
                                     height="100" alt="This post thumbnail"></a>
                             <div class="px-1 py-0">
                                 <div class="font-semibold text-lg mb-2">
-<!--                                    <a class="text-gray-900 hover:text-gray-700" href>Winter Park</a>-->
-                                        <label class="text-gray-900 hover:text-gray-700 cursor-pointer" for="modal-1">Winter Park</label>
-                                        <%- include("../partials/modal", {id_num: 1}); %>
+                                    <a class="text-gray-900 hover:text-gray-700" href="/data?name=Winter Park&lat=40.0105&long=-105.2705">Winter Park</a>
+<!--                                        <label class="text-gray-900 hover:text-gray-700 cursor-pointer" for="modal-1">Winter Park</label>-->
+                                        <%- //include("../partials/modal", {
+                                            //id_num: 1,
+                                            //modal_title: "Winter Park",
+                                            //images: ["https://wallpaperaccess.com/full/896261.jpg"],
+                                            //hotels: {"RODEWAY INN AND SUITES BOULDER" : "Boulder, CO"},
+                                            //weather: weather
+                                        //}); %>
                                 </div>
                                 <p class="text-gray-800 font-arial text-sm ">Located just three miles north of Orlando
                                     in Orange County, the city is 10-square miles with over 30,000 residents. Winter
@@ -113,7 +119,6 @@
                                 <div class="font-semibold text-lg mb-2">
                                     <label class="text-gray-900 hover:text-gray-700 cursor-pointer" for="modal-2">Getting Started
                                         with Traveling Ultralight</label>
-                                    <%- include("../partials/modal", {id_num: 2}); %>
                                 </div>
                                 <p class="text-gray-700 mb-1" title="Published date">23 April 2020 07:00 PM</p>
                                 <p class="text-gray-800 font-arial text-sm">Start by getting a small backpack and then
@@ -131,7 +136,6 @@
                             <div class="px-6 py-5">
                                 <div class="font-semibold text-lg mb-2">
                                     <label class="text-gray-900 hover:text-gray-700 cursor-pointer" for="modal-3">Aspen Nightlife</label>
-                                    <%- include("../partials/modal", {id_num: 3}); %>
                                 </div>
                                 <p class="text-gray-700 mb-1" title="Published date">20 April 2020 06:30 PM</p>
                                 <p class="text-gray-800 font-arial text-sm">Example of post without a title</p>

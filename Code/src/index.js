@@ -1,4 +1,5 @@
 const express = require('express');
+const api = require('./api');
 const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
@@ -112,6 +113,38 @@ app.get("/discovery", (req, res) => {
     res.render("pages/discovery");
 });
 
+
+async function getMountainData(name, image, lat, long) {
+    // Get mountain weather.
+    let weather = await api.getWeatherData(lat, long);
+    let forecasts = [];
+    for (let i = 0; i < 6; i++) {
+        forecasts.push({
+            dt: weather.forecast.periods[i].name,
+            temp: weather.forecast.periods[i].temperature,
+            tempUnit: weather.forecast.periods[i].temperatureUnit,
+            trend: weather.forecast.periods[i].temperatureTrend,
+            windSpeed: weather.forecast.periods[i].windSpeed,
+            windDir: weather.forecast.periods[i].windDirection,
+            details: weather.forecast.periods[i].detailedForecast,
+            logo: weather.forecast.periods[i].icon
+        });
+    }
+    return { name, image, forecasts };
+};
+app.get("/data", (req, res) => {
+    let name = req.query.name;
+    let lat = Number(req.query.lat);
+    let long = Number(req.query.long);
+    let image = "https://wallpaperaccess.com/full/896261.jpg";
+    getMountainData(name, image, lat, long)
+        .then((data) => {
+            res.render("pages/data", {mountainData: data});
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+});
 
 app.get('/register', (req, res) => {
     res.render('pages/register', {});
