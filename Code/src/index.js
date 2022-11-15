@@ -219,15 +219,19 @@ const getHotel = async (lat, long) => {
       })
       };
 
-app.get("/cart", (req, res) => {
+app.get("/cart", async (req, res) => {
   var query = "SELECT * FROM cart WHERE userID = $1";
-
-  db.any(query, [req.session.user.user_id])
+  var query2 = "SELECT * FROM ski_mountain WHERE id = $1";
+  let id;
+  console.log(req.session.user.user_id);
+  await db.any(query, [req.session.user.user_id])
     .then(cart => {
-      console.log(cart.userID);
-      res.render("pages/cart", {
-          cart: cart,
-      });
+      console.log(cart);
+      console.log("ski mountain id " + cart[0].ski_mountainid);
+      id = cart[0].ski_mountainid;
+      // res.render("pages/cart", {
+      //     cart: cart,
+      // });
     })
     .catch(err => {
       res.render('pages/cart', {
@@ -235,6 +239,20 @@ app.get("/cart", (req, res) => {
         error: true,
         message: err.message,
       });
+    });
+
+  console.log(query2 + id);
+  await db.any(query2, [id])
+    .then(data => {
+      console.log("QUERY 2 RETURNS" );
+      console.log(data);
+
+      res.render("pages/cart", {
+        data,
+    });
+    })
+    .catch(err => {
+      console.log(err)
     });
 });
 

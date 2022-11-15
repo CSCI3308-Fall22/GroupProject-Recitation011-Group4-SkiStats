@@ -5,6 +5,10 @@
 <main>
     <form method = "POST" action = "/cart">
         <div class="overflow-x-auto">
+          <div class = "hero-content text-center">
+            <h1 class="text-3xl font-bold"> Ski Wishlist </h1>
+          </div>
+         
             <td><% if (locals.message) { %>
                 <div
                   class="alert alert-<%- locals.error ? 'danger' : 'success' %>"
@@ -20,24 +24,26 @@
                   <th></th>
                   <th>Mountain</th>
                   <th>Location</th>
+                  <th>Runs</th>
+                  <th>Ease</th>
                   <th>Pass</th>
-                  <th></th>
+                  <th>Remove</th>
                 </tr>
               </thead>
               <tbody>
-                <% if(cart){ %> 
-                <% for (var i = 0; i < cart.length; i++){ %>
+                <% data.forEach(function(favorite) {%> 
                 <tr>
                   <th></th>
-                  <td><%= cart[i].userID %></td>
-                  <!-- <td><%= cart[i].State %></td>
-                  <td><%= cart[i].Pass %></td> -->
+                  <td><%= favorite.name %></td>
+                  <td><%= favorite.state %></td>
+                  <td><%= favorite.total_runs %></td>
+                  <td><%= favorite.ease %></td>
+                  <td><%= favorite.pass %></td>
                   <td><button class="btn btn-circle btn-outline">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                   </button></td>
                 </tr>
-                <% } %>
-                <% } %>
+                <% }) %>
               </tbody>
             </table>
           </div>

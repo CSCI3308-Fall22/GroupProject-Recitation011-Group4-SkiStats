@@ -1,9 +1,3 @@
-INSERT INTO
-    users (is_admin, username, password)
-VALUES
-    (true, 'admin@gmail.com', 'admin');
-
-
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('utah','Alta','Ikon',119,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Arapahoe Basin','Ikon',147,'7%');
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Aspen Snowmass','Ikon',336,NULL);
@@ -90,9 +84,9 @@ INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('michigan','Mt
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('trentino','Pejo','Epic',20,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('trentino','Pinzolo','Epic',31.4,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Telluride','Epic',147,'16%');
--- INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
+INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
 
-INSERT INTO ski_mountain(State, Name, Pass,Total_runs, Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
+-- INSERT INTO ski_mountain(State, Name, Pass,Total_runs, Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
 
 
 -- CREATE TABLE users (
@@ -114,3 +108,4 @@ INSERT INTO ski_mountain(State, Name, Pass,Total_runs, Ease) VALUES ('wisconsin'
 -- );
 
 INSERT INTO cart(userID, ski_mountainID) VALUES (1, 86);
+INSERT INTO cart(userID, ski_mountainID) VALUES (3, 86);
