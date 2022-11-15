@@ -219,41 +219,46 @@ const getHotel = async (lat, long) => {
       })
       };
 
-app.get("/cart", async (req, res) => {
-  var query = "SELECT * FROM cart WHERE userID = $1";
+app.get("/wishlist", async (req, res) => {
+  var query = "SELECT * FROM wishlist WHERE userID = $1";
   var query2 = "SELECT * FROM ski_mountain WHERE id = $1";
-  let id;
-  console.log(req.session.user.user_id);
-  await db.any(query, [req.session.user.user_id])
-    .then(cart => {
-      console.log(cart);
-      console.log("ski mountain id " + cart[0].ski_mountainid);
-      id = cart[0].ski_mountainid;
-      // res.render("pages/cart", {
-      //     cart: cart,
-      // });
+  console.log(req.session.user.user_id)
+
+  const query3 = "SELECT * FROM wishlist INNER JOIN ski_mountain ON ski_mountain.id = wishlist.ski_mountainid WHERE wishlist.userID = "+req.session.user.user_id+" GROUP BY wishlist.id, ski_mountain.id;"
+
+  const queryRun = await db.query(query3);
+
+  console.log("ITEMS IN wishlist TABLE that match the session ID",queryRun);
+  
+  await db.any(query3, [req.session.user.user_id])
+    .then(data => {
+      res.render('pages/wishlist', {
+        data,
+      });
     })
     .catch(err => {
-      res.render('pages/cart', {
-        cart: [],
+      res.render('pages/wishlist', {
+        data: [],
         error: true,
         message: err.message,
       });
     });
 
-  console.log(query2 + id);
-  await db.any(query2, [id])
-    .then(data => {
-      console.log("QUERY 2 RETURNS" );
-      console.log(data);
+});
 
-      res.render("pages/cart", {
-        data,
-    });
-    })
-    .catch(err => {
-      console.log(err)
-    });
+app.post('/wishlist/delete', async (req, res) => {
+
+  console.log(req.body)
+
+  try {
+    const query = await db.query(`DELETE FROM wishlist WHERE userid = $1 AND ski_mountainid = '$2';`, [req.session.user.user_id, parseInt(req.body.ski_mountainid)])
+    console.log(query)
+    res.redirect("/wishlist")
+  } catch (error) {
+    console.log(error)
+    res.redirect("/wishlist")
+  }
+  
 });
 
 app.use(auth);

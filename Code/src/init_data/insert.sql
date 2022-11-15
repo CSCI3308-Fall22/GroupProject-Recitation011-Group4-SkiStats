@@ -86,26 +86,11 @@ INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('trentino','Pi
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Telluride','Epic',147,'16%');
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
 
--- INSERT INTO ski_mountain(State, Name, Pass,Total_runs, Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
 
-
--- CREATE TABLE users (
---   id SERIAL PRIMARY KEY,
---   is_admin BOOLEAN NOT NULL,
---   username TEXT UNIQUE NOT NULL,
---   password TEXT NOT NULL,
---   name TEXT,
---   home_address TEXT,
---   account_created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
--- );
-
--- CREATE TABLE cart (
---   id SERIAL PRIMARY KEY,
---   userID INTEGER NOT NULL,
---   ski_mountainID INTEGER NOT NULL,
---   FOREIGN KEY (userID) REFERENCES users (id),
---   FOREIGN KEY (ski_mountainID) REFERENCES ski_mountain (id)
--- );
-
-INSERT INTO cart(userID, ski_mountainID) VALUES (1, 86);
-INSERT INTO cart(userID, ski_mountainID) VALUES (3, 86);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (1, 86);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 86);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 84);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 82);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 5);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 8);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 2);
