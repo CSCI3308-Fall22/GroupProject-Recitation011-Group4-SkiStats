@@ -50,7 +50,7 @@ app.use(
 
 
 
-
+let token = 'null';
 const axios = require("axios");
 
 /*
@@ -72,36 +72,21 @@ const getHotel = async (lat, long) => {
 }
 
 */
-
-
-const a = {
-    url : 'https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode',
-   method: 'GET',
-   dataType:'json',
-   headers: {
-       "Authorization" : 'Bearer ' + '6BpXOA9cVw5lBM64WUADsYauKYN3'
-   },
-   params: {
-       "latitude":40.01925,
-       "longitude":-105.2640669
-   }
-}
-/*
-const getHotel = async (lat, long) => {
-    console.log('ingetHotel');
-    axios(a).then((results) => {
-        data:res.data,
-        res.render("pages/discovery",{data:res.data});
-        console.log('inrespons')
-        console.log(res.data)
+const Accessurl = 
+    {
+        url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+        raw_url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+        method: "post",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+            "grant_type": "client_credentials",
+            "client_id": "KRGf6smGxGSlIkpof8ijvVA3N55JuWmE",
+            "client_secret": "Q4rzCo7EwV1AvFYu"
+        }
     }
-        )
-    .catch(function (error) {
-      console.log(error);
-    })
-    
-};
-*/
+
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
     res.redirect("/login");
@@ -144,33 +129,46 @@ app.get('/logout', (req, res) => {
     res.render('pages/login');
   });
 
+  app.post("/discovery", async (req, res) => {
+    
+  });
   app.get('/discovery', (req, res) => {
     req.session.user = {
         api_key: process.env.API_KEY,
       };
       req.session.save();
+     
+      axios(Accessurl).then((results)=>{                                //api call to refresh access token 
+        token = results.data.access_token;
+        console.log(token);
 
-      //const getHotel = async (lat, long) => {
-       // console.log('ingetHotel');
-        axios(a).then((results) => {
-            console.log(results.data)
-            res.render("pages/discovery",{data:results.data});
+       }).finally(() =>{
+
+        axios({
+            url : 'https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode',            //api to get hotels using access token
+           method: 'GET',
+           dataType:'json',
+           headers: {
+               "Authorization" : 'Bearer ' + token
+           },
+           params: {
+               "latitude":40.01925,
+               "longitude":-105.2640669
+           }
+        }).then((results) => {
+            console.log(token);
+            //console.log("Succes",results.data.data)
+            res.render("pages/discovery",{data: results.data.data});
+            
         }
             )
         .catch(function (error) {
+            console.log(token);
+          //console.log(error);
+        })
+       }).catch(function (error) {
           console.log(error);
         })
-        
-    //};      
-     //getHotel();
-      console.log('boola');
-     // console.log(res.data);
-
-   //res.render('pages/discovery',{
-   // data:res.data,
-    
-   //});
-    
   });
   
 
