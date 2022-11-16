@@ -2,10 +2,10 @@
 <%- include('../partials/navbar') %>
 
 <br>
-    <h1 class="mb-4 font-extrabold tracking-tight leading-none text-center text-3xl md:text-4xl lg:text-6xl"><%= mountainData.name %></h1>
+    <h1 class="mb-4 font-extrabold tracking-tight leading-none text-center text-3xl md:text-4xl lg:text-6xl"><%= mountainData.dest %></h1>
     <div class="divider"></div>
-    <!-- picture carousel -->
-<img src=<%= mountainData.image%> alt="Mountain." />
+    <!-- picture -->
+    <img src=<%= mountainData.image%> alt="Mountain." />
     </br>
     <!-- weather stats -->
     <h3 class="subheading mb-4 font-extrabold tracking-tight leading-none text-center text-xl md:text-2xl lg:text-4xl">Weather</h3>
@@ -49,6 +49,18 @@
             <% } %>
         </div>
     </div>
+    </br>
+    <!-- drive time and map -->
+    <h3 class="subheading mb-4 font-extrabold tracking-tight leading-none text-center text-xl md:text-2xl lg:text-4xl">Navigation</h3>
+    <div class="navigation-section">
+        <% console.log(mountainData.map) %>
+        <%- mountainData.map %>
+    </div>
+    <!-- hotels nearby -->
+    <h3 class="subheading mb-4 font-extrabold tracking-tight leading-none text-center text-xl md:text-2xl lg:text-4xl">Hotels</h3>
+    <div class="hotel-section">
+
+    </div>
 </main>
 
 <%- include('../partials/footer') %>
@@ -62,7 +74,7 @@
 
     img {
         border-radius: 1%;
-        width: 50%;
+        width: 50vw;
         margin: auto;
     }
 
@@ -75,6 +87,13 @@
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         column-gap: 2.5vw;
+    }
+
+    iframe {
+        margin-left: auto;
+        margin-right: auto;
+        width: 50vw;
+        height: 65vh;
     }
 
     @media (max-width: 850px) {

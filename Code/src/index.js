@@ -114,7 +114,7 @@ app.get("/discovery", (req, res) => {
 });
 
 
-async function getMountainData(name, image, lat, long) {
+async function getMountainData(dest, origin, image, lat, long) {
     // Get mountain weather.
     let weather = await api.getWeatherData(lat, long);
     let forecasts = [];
@@ -130,14 +130,20 @@ async function getMountainData(name, image, lat, long) {
             logo: weather.forecast.periods[i].icon
         });
     }
-    return { name, image, forecasts };
-};
+    // Get route map
+    let map = api.getGoogleMapEmbed(500, 500, origin, dest);
+    return { dest, image, forecasts, map };
+}
+
 app.get("/data", (req, res) => {
-    let name = req.query.name;
+    let dest = req.query.dest;
     let lat = Number(req.query.lat);
     let long = Number(req.query.long);
+    let origin = (req.session.user.home_address != null) ? req.session.user.home_address : "Boulder, Colorado";
+
     let image = "https://wallpaperaccess.com/full/896261.jpg";
-    getMountainData(name, image, lat, long)
+
+    getMountainData(dest, origin, image, lat, long)
         .then((data) => {
             res.render("pages/data", {mountainData: data});
         })
