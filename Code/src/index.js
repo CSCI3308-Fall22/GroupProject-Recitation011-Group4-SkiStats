@@ -215,14 +215,24 @@ app.post("/login", async (req, res) => {
         
     }
     
+    axios(Accessurl).then((results)=>{                                //api call to refresh access token 
+        token = results.data.access_token;
+        //console.log(token);
+
+       })
+   let toki = await axios(Accessurl);
+    //console.log(toki.data.access_token);
+     token = toki.data.access_token;
+    
     //console.log("MY CORDINATES ARE:" + dt);
     let config = {
-        headers : {'Authorization': 'Bearer ' + "TeBNAYAwG9CefAga2ekrktofwqzg"},
+        headers : {'Authorization': 'Bearer ' + token},
         params : {
             latitude: dt[0],
             longitude: dt[1]
         },
     }
+    //console.log("MY CORDINATES ARE:" + dt);
     //console.log("MY PARAMS ARE:" + config.params.latitude,config.params.longitude);
     const rest = await axios.get("https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",config);
     res.render("pages/discovery",{data: rest.data.data})
