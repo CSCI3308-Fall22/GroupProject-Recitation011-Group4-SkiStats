@@ -1,0 +1,117 @@
+<%- include ('../partials/header') %> <%- include ('../partials/navbar') %>
+
+<div class="background min-h-screen flex justify-center">
+  <div class="card self-center" id="settings-card">
+    <div class="card-body">
+      <h1 class="card-title">Update Account Details</h1>
+
+      <%- include ('../partials/message') %>
+
+      <form class="was-validated" method="POST" action="/account-settings">
+        <label class="label">
+          <span class="label-text">Name</span>
+        </label>
+
+        <% if (user.name) { %>
+        <input
+          name="nameField"
+          type="text"
+          class="input input-bordered w-full max-w-xs"
+          value="<%= user.name %>"
+        />
+        <% } else { %>
+        <input
+          name="nameField"
+          type="text"
+          class="input input-bordered w-full max-w-xs"
+        />
+        <% } %>
+
+        <div class="divider"></div>
+
+        <label class="label">
+          <span class="label-text">Email</span>
+        </label>
+
+        <input
+          name="emailField"
+          type="email"
+          placeholder="somewhere@everywhere.com"
+          value="<%= user.username %>"
+          class="input input-bordered w-full max-w-xs"
+          required
+        />
+
+        <div class="divider"></div>
+
+        <label class="label">
+          <span class="label-text">Home Address</span>
+        </label>
+
+        <% if (user.home_address) { %>
+        <input
+          name="addressField"
+          type="text"
+          class="input input-bordered w-full max-w-xs"
+          value="<%= user.home_address %>"
+        />
+        <% } else { %>
+        <input
+          name="addressField"
+          type="text"
+          class="input input-bordered w-full max-w-xs"
+        />
+        <% } %>
+
+        <div class="divider"></div>
+
+        <label class="label">
+          <span class="label-text">New Password</span>
+        </label>
+
+        <input
+          name="passwordField"
+          type="password"
+          class="input input-bordered w-full max-w-xs"
+        />
+
+        <div class="divider"></div>
+
+        <button
+          id="submit-button"
+          class="btn btn-primary btn-active"
+          type="submit"
+        >
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .background {
+    background-image: url("https://images.unsplash.com/photo-1586752488885-6ce47fdfd874");
+
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .label-text {
+    font-size: medium;
+    font-weight: 600;
+  }
+
+  #settings-card {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid black;
+    padding: 2%;
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+</style>
+
+<%- include ('../partials/footer') %>
