@@ -1,10 +1,6 @@
-/*INSERT INTO
-    users (is_admin, username, password)
-VALUES
-    (true, 'admin', 'admin');*/
 
+INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('utah','Alta','Ikon',119,NULL);
 
-/*INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('utah','Alta','Ikon',119,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Arapahoe Basin','Ikon',147,'7%');
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Aspen Snowmass','Ikon',336,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('california','Bear Mountain','Ikon',15,'20%');
@@ -91,4 +87,14 @@ INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('trentino','Pe
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('trentino','Pinzolo','Epic',31.4,NULL);
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('colorado','Telluride','Epic',147,'16%');
 INSERT INTO ski_mountain(State,Name,Pass,Total_runs,Ease) VALUES ('wisconsin','Wilmot Mountain','Epic',21,'33%');
-*/
+
+
+
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (1, 86);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 86);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 84);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 82);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 5);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 8);
+INSERT INTO wishlist(userID, ski_mountainID) VALUES (2, 2);
+
