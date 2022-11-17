@@ -1,0 +1,112 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main>
+    <h1 class="mb-4 font-extrabold tracking-tight leading-none text-center text-3xl md:text-4xl lg:text-6xl"><%= mountainData.dest %></h1>
+    <div class="divider"></div>
+    <!-- picture -->
+    <img id="main-image" src=<%= mountainData.image%> alt="A mountain."/>
+    <div class="padding"></div>
+    <!-- weather stats -->
+    <h3 class="subheading mb-4 font-extrabold tracking-tight leading-none text-center text-xl md:text-2xl lg:text-4xl">Weather</h3>
+    <div class="weather-section">
+        <div class="weather-stats grid">
+            <% for (let i = 0; i < 6; i++) { %>
+                <% let weather = mountainData.forecasts[i]; %>
+                <div class="grid-flow-row shadow stats w-full">
+                    <div class="avatar">
+                        <div class="w-16 h-16 inline-block rounded-full">
+                            <img src=<%= weather.logo %> />
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title"><%= weather.dt %></div>
+                        <div class="stat-value text-primary"><%= weather.temp %><span>&#176;</span><%= weather.tempUnit %></div>
+                        <% if (weather.trend === "falling") { %>
+                            <div class="stat-desc">Temperature Trend: <span class="text-red-600 font-bold">Falling ↘</span>︎</div>
+                        <% } else { %>
+                            <div class="stat-desc">Temperature Trend: <span class="text-green-700 font-bold">Rising ↗</span></div>
+                        <% } %>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title">Winds</div>
+                        <div class="stat-value"><%= weather.windSpeed %></br><%= weather.windDir %></div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title">Detailed Forecast</div>
+                        <%
+                            const chunk = (arr, size) =>
+                                Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+                                        arr.slice(i * size, i * size + size)
+                                );
+                        %>
+                        <% let detailed_forecast = chunk(weather.details.split(' '), 5); %>
+                        <% for (let i = 0; i < detailed_forecast.length; i++) { %>
+                            <div class="stat-desc detailed-forecast"><%= detailed_forecast[i].join(' ') %></div>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <div class="padding"></div>
+    <!-- drive time and map -->
+    <h3 class="subheading mb-4 font-extrabold tracking-tight leading-none text-center text-xl md:text-2xl lg:text-4xl">Navigation</h3>
+    <div class="navigation-section">
+        <%- mountainData.map %>
+    </div>
+    <div class="padding"></div>
+    <!-- hotels nearby -->
+    <h3 class="subheading mb-4 font-extrabold tracking-tight leading-none text-center text-xl md:text-2xl lg:text-4xl">Hotels</h3>
+    <div class="hotel-section">
+
+    </div>
+    <div class="padding"></div>
+</main>
+
+<%- include('../partials/footer') %>
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #main-image {
+        border-radius: 1%;
+        width: 50vw;
+        margin: auto;
+    }
+
+    .padding {
+        height: 3vh;
+    }
+
+    .weather-section {
+        display: flex;
+        justify-content: center;
+    }
+
+    .weather-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 2.5vw;
+        row-gap: 2.5vw;
+    }
+
+    iframe {
+        margin: auto;
+        width: 50vw;
+        height: 65vh;
+    }
+
+    @media (max-width: 850px) {
+        .weather-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 2.5vw;
+            column-gap: 2.5vw;
+        }
+    }
+</style>
