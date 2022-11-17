@@ -132,6 +132,7 @@ app.post("/login", async (req, res) => {
                         throw new Error("Incorrect username or password.");
                     }
                     user.user_id = data[0].id;
+                    console.log(user.user_id);
                     user.is_admin = data[0].is_admin;
                     user.username = data[0].username;
                     user.name = data[0].name;
@@ -249,6 +250,74 @@ const auth = (req, res, next) => {
     }
     next();
 };
+
+const getHotel = async (lat, long) => {
+    console.log('ingetHotel')
+    axios({
+      url: `test.api.amadeus.com/reference-data/locations/hotels/by-geocode`,
+          method: 'GET',
+          dataType:'json',
+          headers: {
+            "Authorization" : 'Bearer' + 'api_key'
+          },
+          params: {
+              "latitude": 0,
+              "longitude": 0,
+              'radius': 15
+          }
+      })
+      .then(res => {
+          res.data,
+          console.log('inresponse')
+          console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err);
+        res.redirect('/');
+      })
+      };
+
+app.get("/wishlist", async (req, res) => {
+  var query = "SELECT * FROM wishlist WHERE userID = $1";
+  var query2 = "SELECT * FROM ski_mountain WHERE id = $1";
+  console.log(req.session.user.user_id)
+
+  const query3 = "SELECT * FROM wishlist INNER JOIN ski_mountain ON ski_mountain.id = wishlist.ski_mountainid WHERE wishlist.userID = "+req.session.user.user_id+" GROUP BY wishlist.id, ski_mountain.id;"
+
+  const queryRun = await db.query(query3);
+
+  console.log("ITEMS IN wishlist TABLE that match the session ID",queryRun);
+  
+  await db.any(query3, [req.session.user.user_id])
+    .then(data => {
+      res.render('pages/wishlist', {
+        data,
+      });
+    })
+    .catch(err => {
+      res.render('pages/wishlist', {
+        data: [],
+        error: true,
+        message: err.message,
+      });
+    });
+
+});
+
+app.post('/wishlist/delete', async (req, res) => {
+
+  console.log(req.body)
+
+  try {
+    const query = await db.query(`DELETE FROM wishlist WHERE userid = $1 AND ski_mountainid = '$2';`, [req.session.user.user_id, parseInt(req.body.ski_mountainid)])
+    console.log(query)
+    res.redirect("/wishlist")
+  } catch (error) {
+    console.log(error)
+    res.redirect("/wishlist")
+  }
+  
+});
 
 app.use(auth);
 

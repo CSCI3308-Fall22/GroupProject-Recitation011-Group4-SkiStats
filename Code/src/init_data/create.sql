@@ -16,3 +16,11 @@ CREATE TABLE users (
   home_address TEXT,
   account_created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE wishlist (
+  id SERIAL PRIMARY KEY,
+  userID INTEGER NOT NULL,
+  ski_mountainID INTEGER NOT NULL,
+  FOREIGN KEY (userID) REFERENCES users (id),
+  FOREIGN KEY (ski_mountainID) REFERENCES ski_mountain (id)
+);
