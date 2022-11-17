@@ -51,27 +51,33 @@ app.use(
 
 
 let token = 'null';
+let dt = [];
 const axios = require("axios");
 
-/*
-const getHotel = async (lat, long) => {
-    let url = 'test.api.amadeus.com/reference-data/locations/hotels/by-geocode' +
-    lat + "," + long + "," + 15;
+
+ const getLatLong = async (city) => {
+    let url =
+      "http://api.openweathermap.org/geo/1.0/direct?q=" +
+      city +
+      "&limit=5&appid=ef09dadf66ef76c8ce41972f2a923c75"
     return await axios
-    .get(url)
-    .then((res) => {
+      .get(url)
+      .then((res) => {
+       const dt =[res.data[0].lat,res.data[0].lon]
+      console.log(dt)
+        return dt;
+    })
+      .catch(function (error) {
+        console.log("this has error");
+     
+        console.log(error);
+        return null;
+      });
+  };
 
-        res.data;
-        console.log(res.data)
-    }
-        )
-    .catch(function (error) {
-      console.log(error);
-    });
-    
-}
+//getLatLong('winter park');  
 
-*/
+
 const Accessurl = 
     {
         url: "https://test.api.amadeus.com/v1/security/oauth2/token",
@@ -129,9 +135,32 @@ app.get('/logout', (req, res) => {
     res.render('pages/login');
   });
 
-  app.post("/discovery", async (req, res) => {
+
+  app.post("/updHotels", async (req, res) => {
+    //console.log(req.body.city);
+    dt = await getLatLong(req.body.city);
+    if(dt==null) {
+        dt = [ 40.0154155, -105.270241 ];
+        
+    }
     
+    //console.log("MY CORDINATES ARE:" + dt);
+    let config = {
+        headers : {'Authorization': 'Bearer ' + "TeBNAYAwG9CefAga2ekrktofwqzg"},
+        params : {
+            latitude: dt[0],
+            longitude: dt[1]
+        },
+    }
+    //console.log("MY PARAMS ARE:" + config.params.latitude,config.params.longitude);
+    const rest = await axios.get("https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",config);
+    res.render("pages/discovery",{data: rest.data.data})
+
   });
+
+
+
+
   app.get('/discovery', (req, res) => {
     req.session.user = {
         api_key: process.env.API_KEY,

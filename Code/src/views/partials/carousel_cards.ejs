@@ -17,11 +17,19 @@
     reviews with an average of 4.8 out of 5 stars</h4>
   <div class="input" id="cord" href="/getHotel" action="/getHotel"> </div>
 
+  
 
+
+  
 
 
   <section class="text-gray-600 body-font">
+   
     <div class="container px-1 py-0 mx-auto">
+      <form method="POST" action="/updHotels">
+        <input type="text" id="city" name= "city" style="font-family: 'Raleway', sans-serif;margin-bottom: 20px;font-size: 20px;" placeholder="Where to?" > </input>
+        
+      </form>
       <div class="flex flex-wrap -m-4">
         <% data.forEach(x=>{ %>
 
