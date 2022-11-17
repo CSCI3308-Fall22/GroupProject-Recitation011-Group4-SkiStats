@@ -60,6 +60,50 @@ app.use(
     })
 );
 
+
+let token = 'null';
+let dt = [];
+const axios = require("axios");
+
+
+ const getLatLong = async (city) => {
+    let url =
+      "http://api.openweathermap.org/geo/1.0/direct?q=" +
+      city +
+      "&limit=5&appid=ef09dadf66ef76c8ce41972f2a923c75"
+    return await axios
+      .get(url)
+      .then((res) => {
+       const dt =[res.data[0].lat,res.data[0].lon]
+      console.log(dt)
+        return dt;
+    })
+      .catch(function (error) {
+        console.log("this has error");
+     
+        console.log(error);
+        return null;
+      });
+  };
+
+//getLatLong('winter park');  
+
+
+const Accessurl = 
+    {
+        url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+        raw_url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+        method: "post",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+            "grant_type": "client_credentials",
+            "client_id": "KRGf6smGxGSlIkpof8ijvVA3N55JuWmE",
+            "client_secret": "Q4rzCo7EwV1AvFYu"
+        }
+    }
+
 app.use(function(req, res, next) {
     res.locals.user = req.session.user;
     next();
@@ -160,9 +204,72 @@ app.post("/login", async (req, res) => {
         })
 });
 
-app.get("/discovery", (req, res) => {
-    res.render("pages/discovery");
-});
+
+
+
+  app.post("/updHotels", async (req, res) => {
+    //console.log(req.body.city);
+    dt = await getLatLong(req.body.city);
+    if(dt==null) {
+        dt = [ 40.0154155, -105.270241 ];
+        
+    }
+    
+    //console.log("MY CORDINATES ARE:" + dt);
+    let config = {
+        headers : {'Authorization': 'Bearer ' + "TeBNAYAwG9CefAga2ekrktofwqzg"},
+        params : {
+            latitude: dt[0],
+            longitude: dt[1]
+        },
+    }
+    //console.log("MY PARAMS ARE:" + config.params.latitude,config.params.longitude);
+    const rest = await axios.get("https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",config);
+    res.render("pages/discovery",{data: rest.data.data})
+
+  });
+
+
+
+
+  app.get('/discovery', (req, res) => {
+    req.session.user = {
+        api_key: process.env.API_KEY,
+      };
+      req.session.save();
+     
+      axios(Accessurl).then((results)=>{                                //api call to refresh access token 
+        token = results.data.access_token;
+        console.log(token);
+
+       }).finally(() =>{
+
+        axios({
+            url : 'https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode',            //api to get hotels using access token
+           method: 'GET',
+           dataType:'json',
+           headers: {
+               "Authorization" : 'Bearer ' + token
+           },
+           params: {
+               "latitude":40.01925,
+               "longitude":-105.2640669
+           }
+        }).then((results) => {
+            console.log(token);
+            //console.log("Succes",results.data.data)
+            res.render("pages/discovery",{data: results.data.data});
+            
+        }
+            )
+        .catch(function (error) {
+            console.log(token);
+          //console.log(error);
+        })
+       }).catch(function (error) {
+          console.log(error);
+        })
+  });
 
 
 async function getMountainData(dest, origin, image, lat, long) {
@@ -203,9 +310,8 @@ app.get("/data", (req, res) => {
         })
 });
 
-app.get('/register', (req, res) => {
-    res.render('pages/register', {});
-});
+
+
   
 app.post('/register', async (req, res) => {
     const hash = await bcrypt.hash(req.body.password, 10);

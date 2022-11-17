@@ -1,0 +1,31 @@
+        {
+            "type": "amadeusOAuth2Token",
+            "username": "kobesmall12@gmail.com",
+            "application_name": "groupproject",
+            "client_id": "KRGf6smGxGSlIkpof8ijvVA3N55JuWmE",
+            "token_type": "Bearer",
+            "access_token": "AP6SeubTBEOECQJ8QiM7qt6gGNjz",
+            "expires_in": 1799,
+            "state": "approved",
+            "scope": ""
+        }
+
+           {
+            "type": "amadeusOAuth2Token",
+            "username": "kobesmall12@gmail.com",
+            "application_name": "groupproject",
+            "client_id": "KRGf6smGxGSlIkpof8ijvVA3N55JuWmE",
+            "token_type": "Bearer",
+            "access_token": "toOBHaDLgGDGIGV6hGoEZRHCC98V",
+            "expires_in": 1799,
+            "state": "approved",
+            "scope": ""
+        }
+
+         curl "https://test.api.amadeus.com/v1/security/oauth2/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "grant_type=client_credentials&client_id=KRGf6smGxGSlIkpof8ijvVA3N55JuWmE&client_secret=Q4rzCo7EwV1AvFYu"
+        %  
+
+        40.01925,
+        "longitude": -105.2640669
