@@ -261,6 +261,21 @@ app.post('/wishlist/delete', async (req, res) => {
   
 });
 
+app.post('/add_wishlist', function (req, res) {
+  const query = 'insert into wishlist (userid, ski_mountainid) VALUES ($1, $2) returning *';
+  db.any(query, [req.session.user.user_id, req.body.ski_mountainid])
+    .then(function (data) {
+      res.status(201).json({
+        status: 'success',
+        data: data,
+        message: 'data added successfully',
+      });
+    })
+    .catch(function (err) {
+      return console.log(err);
+    });
+});
+
 app.use(auth);
 
 app.get('/logout', (req, res) => {
