@@ -75,7 +75,7 @@ const axios = require("axios");
       .get(url)
       .then((res) => {
        const dt =[res.data[0].lat,res.data[0].lon]
-      console.log(dt)
+      //console.log(dt)
         return dt;
     })
       .catch(function (error) {
@@ -234,9 +234,20 @@ app.post("/login", async (req, res) => {
     }
     //console.log("MY CORDINATES ARE:" + dt);
     //console.log("MY PARAMS ARE:" + config.params.latitude,config.params.longitude);
-    const rest = await axios.get("https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",config);
-    res.render("pages/discovery",{data: rest.data.data})
+    const rest = await axios.get("https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",config).then((response) => {
+        
+            //console.log(response.data.data);
+            res.render("pages/discovery",{data:response.data.data});
+        
 
+
+    }).catch((error) => {
+        res.render("pages/discovery",{message:"NO HOTEL INFO FOR THIS CITY"});
+        //console.log(error);
+    })
+
+    //console.log(rest.data.data);
+    
   });
 
 
@@ -266,7 +277,7 @@ app.post("/login", async (req, res) => {
                "longitude":-105.2640669
            }
         }).then((results) => {
-            console.log(token);
+            //console.log(token);
             //console.log("Succes",results.data.data)
             res.render("pages/discovery",{data: results.data.data});
             
