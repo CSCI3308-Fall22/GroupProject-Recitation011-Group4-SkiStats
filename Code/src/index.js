@@ -70,21 +70,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-let token = "null";
-
-const Accessurl = {
-  url: "https://test.api.amadeus.com/v1/security/oauth2/token",
-  raw_url: "https://test.api.amadeus.com/v1/security/oauth2/token",
-  method: "post",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-  },
-  data: {
-    grant_type: "client_credentials",
-    client_id: process.env.AMADEUS_CLIENT_ID,
-    client_secret: process.env.AMADEUS_CLIENT_SECRET,
-  },
-};
 
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
