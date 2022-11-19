@@ -371,31 +371,6 @@ app.get("/filter", function (req, res) {
     });
 });
 
-const getHotel = async (lat, long) => {
-  console.log("ingetHotel");
-  axios({
-    url: `test.api.amadeus.com/reference-data/locations/hotels/by-geocode`,
-    method: "GET",
-    dataType: "json",
-    headers: {
-      Authorization: "Bearer" + "api_key",
-    },
-    params: {
-      latitude: 0,
-      longitude: 0,
-      radius: 15,
-    },
-  })
-    .then((res) => {
-      res.data, console.log("inresponse");
-      console.log(res.data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.redirect("/");
-    });
-};
-
 app.get("/wishlist", async (req, res) => {
   const query =
     "SELECT * FROM wishlist INNER JOIN ski_mountains ON ski_mountains.id = wishlist.ski_mountain_id WHERE wishlist.user_id = $1 GROUP BY wishlist.id, ski_mountains.id;";
