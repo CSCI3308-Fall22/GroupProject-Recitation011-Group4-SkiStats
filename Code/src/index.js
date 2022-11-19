@@ -278,7 +278,7 @@ app.get("/discovery", async (req, res) => {
   req.session.save();
 
   const query = `SELECT * FROM ski_mountain`;
-  db.query(query).then((Mdata) => {
+  const Mdata = await db.query(query)
     axios(Accessurl)
       .then((results) => {
         //api call to refresh access token
@@ -314,7 +314,7 @@ app.get("/discovery", async (req, res) => {
       .catch(function (error) {
         console.log(error);
       });
-  });
+  
 });
 
 async function getMountainData(dest, origin, image, lat, long) {
