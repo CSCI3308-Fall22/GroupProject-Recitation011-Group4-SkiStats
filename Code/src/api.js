@@ -110,7 +110,28 @@ const getLatLong = async (city) => {
     });
 };
 
+const getAmadeusAccessToken = async () => {
+  return await axios({
+    url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+    raw_url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: {
+      grant_type: "client_credentials",
+      client_id: process.env.AMADEUS_CLIENT_ID,
+      client_secret: process.env.AMADEUS_CLIENT_SECRET,
+    },
+  })
+    .then((res) => res.data)
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 module.exports.getWeatherData = getWeatherData;
 module.exports.getRouteDistanceTime = getRouteDistanceTime;
 module.exports.getGoogleMapEmbed = getGoogleMapEmbed;
 module.exports.getLatLong = getLatLong;
+module.exports.getAmadeusAccessToken = getAmadeusAccessToken;

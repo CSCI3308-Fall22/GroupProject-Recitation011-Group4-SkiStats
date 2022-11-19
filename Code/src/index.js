@@ -206,84 +206,93 @@ app.post("/account-settings", async (req, res) => {
     });
 });
 
+// If the Amadeus API access token hasn't been refreshed in the last 20 minutes, refresh it
+const refreshAmadeusAccessToken = async (req) => {
+  if (!req.session.amadeus_access_token) {
+    let result = await api.getAmadeusAccessToken();
+
+    req.session.amadeus_access_token = {
+      date: Date.now(),
+      token: result.access_token,
+    };
+    req.session.save();
+  } else {
+    nowMinus20Minutes = Date.now() - 1000 * 60 * 20;
+
+    if (req.session.amadeus_access_token.date < nowMinus20Minutes) {
+      let result = await api.getAmadeusAccessToken();
+
+      req.session.amadeus_access_token = {
+        date: Date.now(),
+        token: result.access_token,
+      };
+      req.session.save();
+    }
+  }
+};
+
 app.post("/updHotels", async (req, res) => {
   const latlon = await api.getLatLong(req.body.city);
 
   if (!latlon) {
     res.render("pages/discovery", {
-      message: "No hotels found!",
+      message: "Unknown city",
       error: true,
     });
     return;
   }
 
-  axios(Accessurl).then((results) => {
-    //api call to refresh access token
-    token = results.data.access_token;
-    //console.log(token);
-  });
-  let toki = await axios(Accessurl);
-  //console.log(toki.data.access_token);
-  token = toki.data.access_token;
+  await refreshAmadeusAccessToken(req);
 
   let config = {
-    headers: { Authorization: "Bearer " + token },
+    headers: {
+      Authorization: "Bearer " + req.session.amadeus_access_token.token,
+    },
     params: {
       latitude: latlon.lat,
       longitude: latlon.lon,
     },
   };
-  //console.log("MY PARAMS ARE:" + config.params.latitude,config.params.longitude);
-  const rest = await axios
+  await axios
     .get(
       "https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",
       config
     )
     .then((response) => {
-      //console.log(response.data.data);
       res.render("pages/discovery", { data: response.data.data });
     })
     .catch((error) => {
+      console.log(error);
+
       res.render("pages/discovery", {
-        message: "NO HOTEL INFO FOR THIS CITY",
+        message: "No nearby hotels found!",
         error: true,
       });
-      //console.log(error);
     });
-
-  //console.log(rest.data.data);
 });
 
-app.get("/discovery", (req, res) => {
-  axios(Accessurl)
+app.get("/discovery", async (req, res) => {
+  await refreshAmadeusAccessToken(req);
+
+  await axios({
+    url: "https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",
+    method: "GET",
+    dataType: "json",
+    headers: {
+      Authorization: "Bearer " + req.session.amadeus_access_token.token,
+    },
+    params: {
+      latitude: 40.01925,
+      longitude: -105.2640669,
+    },
+  })
     .then((results) => {
-      //api call to refresh access token
-      token = results.data.access_token;
-      console.log(token);
+      res.render("pages/discovery", { data: results.data.data });
     })
-    .finally(() => {
-      axios({
-        url: "https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode", //api to get hotels using access token
-        method: "GET",
-        dataType: "json",
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-        params: {
-          latitude: 40.01925,
-          longitude: -105.2640669,
-        },
-      })
-        .then((results) => {
-          //console.log(token);
-          //console.log("Succes",results.data.data)
-          res.render("pages/discovery", { data: results.data.data });
-        })
-        .catch(function (error) {
-          console.log(token);
-          //console.log(error);
-        });
+    .catch(function (error) {
+      console.log(error);
     })
+
     .catch(function (error) {
       console.log(error);
     });
