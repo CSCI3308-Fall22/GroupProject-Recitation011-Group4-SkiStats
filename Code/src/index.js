@@ -56,7 +56,7 @@ app.use(
 // Restrict website access until the user is logged in
 const auth = (req, res, next) => {
   if (!req.session.user) {
-    if (!["/login", "/register", "/discovery"].includes(req.path)) {
+    if (["/account-settings", "/wishlist"].includes(req.path)) {
       return res.redirect("/login");
     }
   }
@@ -69,7 +69,6 @@ app.use(function (req, res, next) {
   res.locals.user = req.session.user;
   next();
 });
-
 
 // Redirect '/' to '/login'.
 app.get("/", (req, res) => {
