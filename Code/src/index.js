@@ -217,15 +217,18 @@ const refreshAmadeusAccessToken = async (req) => {
 
 app.post("/updHotels", async (req, res) => {
   const latlon = await api.getLatLong(req.body.city);
+  const query = `SELECT * FROM ski_mountains`;
+  const Mdata = await db.query(query);
 
   if (!latlon) {
     res.render("pages/discovery", {
       message: "Unknown city",
       error: true,
+      Mdata: Mdata,
     });
     return;
   }
-
+ 
   await refreshAmadeusAccessToken(req);
 
   let config = {
@@ -243,7 +246,11 @@ app.post("/updHotels", async (req, res) => {
       config
     )
     .then((response) => {
-      res.render("pages/discovery", { data: response.data.data });
+      res.render("pages/discovery", {
+        data: response.data.data,
+        Mdata: Mdata,
+        state: latlon.state,
+      });
     })
     .catch((error) => {
       console.log(error);
@@ -251,12 +258,16 @@ app.post("/updHotels", async (req, res) => {
       res.render("pages/discovery", {
         message: "No nearby hotels found!",
         error: true,
+        Mdata: Mdata,
       });
     });
 });
 
 app.get("/discovery", async (req, res) => {
   await refreshAmadeusAccessToken(req);
+
+  const query = `SELECT * FROM ski_mountains`;
+  const Mdata = await db.query(query);
 
   await axios({
     url: "https://test.api.amadeus.com/v1//reference-data/locations/hotels/by-geocode",
@@ -271,7 +282,7 @@ app.get("/discovery", async (req, res) => {
     },
   })
     .then((results) => {
-      res.render("pages/discovery", { data: results.data.data });
+      res.render("pages/discovery", { data: results.data.data, Mdata: Mdata });
     })
     .catch(function (error) {
       console.log(error);
