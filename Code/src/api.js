@@ -73,31 +73,65 @@ const getGoogleMapEmbed = function (width, height, origin, destination) {
 };
 
 const getHotel = async (lat, long) => {
-  console.log('ingetHotel')
+  console.log("ingetHotel");
   axios({
     url: `test.api.amadeus.com/reference-data/locations/hotels/by-geocode`,
-        method: 'GET',
-        dataType:'json',
-        headers: {
-          "Authorization" : 'Bearer' + 'api_key'
-        },
-        params: {
-            "latitude": lat,
-            "longitude": long,
-            'radius': 15
-        }
+    method: "GET",
+    dataType: "json",
+    headers: {
+      Authorization: "Bearer" + "api_key",
+    },
+    params: {
+      latitude: lat,
+      longitude: long,
+      radius: 15,
+    },
+  })
+    .then((res) => {
+      res.data, console.log("inresponse");
+      console.log(res.data);
     })
-    .then(res => {
-        res.data,
-        console.log('inresponse')
-        console.log(res.data)
-    })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-      res.redirect('/');
-    })
-    };
+      res.redirect("/");
+    });
+};
+
+const getLatLong = async (city) => {
+  let url =
+    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    city +
+    "&limit=0&appid=ef09dadf66ef76c8ce41972f2a923c75";
+  return await axios
+    .get(url)
+    .then((res) => res.data[0])
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+const getAmadeusAccessToken = async () => {
+  return await axios({
+    url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+    raw_url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: {
+      grant_type: "client_credentials",
+      client_id: process.env.AMADEUS_CLIENT_ID,
+      client_secret: process.env.AMADEUS_CLIENT_SECRET,
+    },
+  })
+    .then((res) => res.data)
+    .catch(function (error) {
+      console.log(error);
+    });
+};
 
 module.exports.getWeatherData = getWeatherData;
 module.exports.getRouteDistanceTime = getRouteDistanceTime;
 module.exports.getGoogleMapEmbed = getGoogleMapEmbed;
+module.exports.getLatLong = getLatLong;
+module.exports.getAmadeusAccessToken = getAmadeusAccessToken;
