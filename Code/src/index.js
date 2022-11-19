@@ -262,11 +262,6 @@ app.post("/updHotels", async (req, res) => {
 });
 
 app.get("/discovery", (req, res) => {
-  req.session.user = {
-    api_key: process.env.API_KEY,
-  };
-  req.session.save();
-
   axios(Accessurl)
     .then((results) => {
       //api call to refresh access token
