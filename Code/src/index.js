@@ -95,8 +95,8 @@ const Accessurl = {
   },
   data: {
     grant_type: "client_credentials",
-    client_id: "KRGf6smGxGSlIkpof8ijvVA3N55JuWmE",
-    client_secret: "Q4rzCo7EwV1AvFYu",
+    client_id: process.env.AMADEUS_CLIENT_ID,
+    client_secret: process.env.AMADEUS_CLIENT_SECRET,
   },
 };
 
