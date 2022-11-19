@@ -337,44 +337,32 @@ app.get("/filter", function (req, res) {
   var name = Boolean(req.body.Name);
   var pass = String(req.body.Pass);
 
-  var query = "SELECT * from ski_mountain";
-  var notFirst = 0;
-  passFlag = 0;
-  if (pass == "Ikon") {
-    query += " WHERE Pass = $1";
-    passFlag = 1;
-  } else if (pass == "Epic") {
-    query += " WHERE Pass = $1";
-    passFlag = 1;
+  var query = "SELECT * from ski_mountains WHERE id IS NOT NULL";
+
+  if (["Ikon", "Epic"].includes(pass)) {
+    query += " AND ski_pass = $1";
   }
 
   if (state != "") {
-    if ((passFlag = 1)) {
-      query += " AND";
-    } else {
-      query += " WHERE";
-    }
-    query += " State = $2";
+    query += " AND state = $2";
   }
+
+  query += " ORDER BY";
+
   if (ease == 1) {
-    if (notFirst == 0) query += " ORDER BY";
-    query += " Ease DESC";
-    notFirst = 1;
+    query += " ease DESC,";
   }
+
   if (num_runs == 1) {
-    if (notFirst == 0) query += " ORDER BY";
-    if (notFirst == 1) query += ",";
-    query += " Total_runs DESC";
-    notFirst = 1;
+    query += " total_runs DESC,";
   }
+
   if (name == 1) {
-    if (notFirst == 0) query += " ORDER BY";
-    if (notFirst == 1) query += ",";
-    query += " Name DESC";
-    notFirst = 1;
+    query += " name DESC,";
   }
-  query += ";";
-  db.any(query, [req.body.Pass, req.body.State])
+
+  query += " id ASC";
+  db.manyOrNone(query, [req.body.Pass, req.body.State])
     .then(function (rows) {
       res.send(rows);
     })
@@ -410,7 +398,7 @@ const getHotel = async (lat, long) => {
 
 app.get("/wishlist", async (req, res) => {
   const query =
-    "SELECT * FROM wishlist INNER JOIN ski_mountain ON ski_mountain.id = wishlist.ski_mountainid WHERE wishlist.userID = $1 GROUP BY wishlist.id, ski_mountain.id;";
+    "SELECT * FROM wishlist INNER JOIN ski_mountains ON ski_mountains.id = wishlist.ski_mountain_id WHERE wishlist.user_id = $1 GROUP BY wishlist.id, ski_mountains.id;";
 
   await db
     .manyOrNone(query, [req.session.user.user_id])
@@ -430,7 +418,7 @@ app.get("/wishlist", async (req, res) => {
 
 app.post("/wishlist", async (req, res) => {
   await db
-    .none(`DELETE FROM wishlist WHERE userid = $1 AND ski_mountainid = $2;`, [
+    .none(`DELETE FROM wishlist WHERE user_id = $1 AND ski_mountain_id = $2;`, [
       req.session.user.user_id,
       parseInt(req.body.ski_mountainid),
     ])

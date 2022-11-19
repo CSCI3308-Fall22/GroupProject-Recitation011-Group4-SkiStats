@@ -1,10 +1,10 @@
-CREATE TABLE ski_mountain (
+CREATE TABLE ski_mountains (
   id SERIAL PRIMARY KEY,
-  State VARCHAR,
-  Name VARCHAR,
-  Pass VARCHAR,
-  Total_runs INTEGER,
-  Ease VARCHAR
+  name TEXT NOT NULL,
+  state TEXT NOT NULL,
+  ski_pass TEXT NOT NULL,
+  total_runs INTEGER NOT NULL DEFAULT 0,
+  ease TEXT
 );
 
 CREATE TABLE users (
@@ -19,8 +19,9 @@ CREATE TABLE users (
 
 CREATE TABLE wishlist (
   id SERIAL PRIMARY KEY,
-  userID INTEGER NOT NULL,
-  ski_mountainID INTEGER NOT NULL,
-  FOREIGN KEY (userID) REFERENCES users (id),
-  FOREIGN KEY (ski_mountainID) REFERENCES ski_mountain (id)
+  user_id INTEGER NOT NULL,
+  ski_mountain_id INTEGER NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  FOREIGN KEY (ski_mountain_id) REFERENCES ski_mountains (id) ON DELETE CASCADE,
+  UNIQUE(user_id, ski_mountain_id)
 );

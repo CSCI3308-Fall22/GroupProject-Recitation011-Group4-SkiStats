@@ -1,5 +1,5 @@
 INSERT INTO
-    ski_mountain (State, Name, Pass, Total_runs, Ease)
+    ski_mountains (state, name, ski_pass, total_runs, ease)
 VALUES
     ('utah', 'Alta', 'Ikon', 119, NULL),
     ('colorado', 'Arapahoe Basin', 'Ikon', 147, '7%'),
