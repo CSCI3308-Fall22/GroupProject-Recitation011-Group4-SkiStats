@@ -409,49 +409,37 @@ const getHotel = async (lat, long) => {
 };
 
 app.get("/wishlist", async (req, res) => {
-  var query = "SELECT * FROM wishlist WHERE userID = $1";
-  var query2 = "SELECT * FROM ski_mountain WHERE id = $1";
-  console.log(req.session.user.user_id);
-
-  const query3 =
-    "SELECT * FROM wishlist INNER JOIN ski_mountain ON ski_mountain.id = wishlist.ski_mountainid WHERE wishlist.userID = " +
-    req.session.user.user_id +
-    " GROUP BY wishlist.id, ski_mountain.id;";
-
-  const queryRun = await db.query(query3);
-
-  console.log("ITEMS IN wishlist TABLE that match the session ID", queryRun);
+  const query =
+    "SELECT * FROM wishlist INNER JOIN ski_mountain ON ski_mountain.id = wishlist.ski_mountainid WHERE wishlist.userID = $1 GROUP BY wishlist.id, ski_mountain.id;";
 
   await db
-    .any(query3, [req.session.user.user_id])
+    .manyOrNone(query, [req.session.user.user_id])
     .then((data) => {
       res.render("pages/wishlist", {
-        data,
+        data: data,
       });
     })
     .catch((err) => {
+      console.log(err);
       res.render("pages/wishlist", {
-        data: [],
         error: true,
-        message: err.message,
+        message: "Failed to retrieve wishlist!",
       });
     });
 });
 
-app.post("/wishlist/delete", async (req, res) => {
-  console.log(req.body);
-
-  try {
-    const query = await db.query(
-      `DELETE FROM wishlist WHERE userid = $1 AND ski_mountainid = '$2';`,
-      [req.session.user.user_id, parseInt(req.body.ski_mountainid)]
-    );
-    console.log(query);
-    res.redirect("/wishlist");
-  } catch (error) {
-    console.log(error);
-    res.redirect("/wishlist");
-  }
+app.post("/wishlist", async (req, res) => {
+  await db
+    .none(`DELETE FROM wishlist WHERE userid = $1 AND ski_mountainid = $2;`, [
+      req.session.user.user_id,
+      parseInt(req.body.ski_mountainid),
+    ])
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      res.redirect("/wishlist");
+    });
 });
 
 app.listen(3000);
