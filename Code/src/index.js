@@ -256,14 +256,13 @@ app.post("/updHotels", async (req, res) => {
           message: "NO HOTEL INFO FOR THIS CITY",
           Mdata: Mdata,
         });
-        console.log("NO BOOMB");
+      
       });
     });
 });
 
 async function getMounts() {
   const query = `SELECT * FROM ski_mountain`;
-  console.log("booba");
   const { descrit } = "s";
   db.query(query, [descrit]);
   db.any(query).then((data) => {
