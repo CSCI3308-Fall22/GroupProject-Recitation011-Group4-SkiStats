@@ -237,7 +237,10 @@ app.post("/updHotels", async (req, res) => {
       res.render("pages/discovery", { data: response.data.data });
     })
     .catch((error) => {
-      res.render("pages/discovery", { message: "NO HOTEL INFO FOR THIS CITY" });
+      res.render("pages/discovery", {
+        message: "NO HOTEL INFO FOR THIS CITY",
+        error: true,
+      });
       //console.log(error);
     });
 

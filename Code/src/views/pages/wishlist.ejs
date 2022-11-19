@@ -6,16 +6,7 @@
       <h1 class="text-3xl font-bold">Ski Wishlist</h1>
     </div>
 
-    <td>
-      <% if (locals.message) { %>
-      <div
-        class="alert alert-<%- locals.error ? 'danger' : 'success' %>"
-        role="alert"
-      >
-        <%= message %>
-      </div>
-      <% } %>
-    </td>
+    <td><%- include ('../partials/message') %></td>
     <table class="table w-full">
       <!-- head -->
       <thead>
