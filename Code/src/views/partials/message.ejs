@@ -1,5 +1,8 @@
 <% if (locals.message) { %>
-    <div class="alert alert-<%- locals.error ? 'error' : 'success' %> shadow-lg" role="alert">
-        <%= message %>
-    </div>
+<div
+  class="alert alert-<%- locals.error ? 'error' : 'success' %> shadow-lg"
+  role="alert"
+>
+  <%= message %>
+</div>
 <% } %>

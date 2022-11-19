@@ -1,83 +1,111 @@
-<%- include ('../partials/header') %>
-<%- include ('../partials/navbar') %>
+<%- include ('../partials/header') %> <%- include ('../partials/navbar') %>
 
-<div class="bg-no-repeat bg-cover bg-center relative" id="img" style="background-image: url('https://images.unsplash.com/photo-1586752488885-6ce47fdfd874?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2113&q=80');">
-    <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
-        <div class="flex justify-center self-center  z-10">
-            <div class="p-12 bg-white mx-auto rounded-2xl w-100" id="form-field">
-                <h1 class="mb-3 font-bold italic text-5xl heading-text text-center text-gray-800">SkiStats</h1>
-                <div class="col"><%- include ('../partials/message') %></div>
-                <div class="mb-4">
-                    <h3 class="font-semibold text-2xl text-gray-800">Sign In </h3>
-                    <p class="text-gray-500">Please sign in to your account</p>
-                </div>
-                <form method="POST" action="/login">
-                    <div class="space-y-5">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-gray-700 tracking-wide">Email</label>
-                            <input class=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-blue-400" type="email" id="username" name="username" placeholder="Enter your email">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="mb-5 text-sm font-medium text-gray-700 tracking-wide">
-                                Password
-                            </label>
-                            <input class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-blue-400" type="password" id="password" name="password" placeholder="Enter your password">
-                        </div>
-                        <div>
-                            <button type="submit" class="w-full flex justify-center bg-blue-400  hover:bg-blue-500 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
-                                Sign in
-                            </button>
-                        </div>
-                        <div class="text-sm" id="register-field">
-                            <a href="/register" class="register-link">
-                                Register an account
-                            </a>
-                        </div>
-                    </div>
-                </form>
-            </div>
+<div
+  class="bg-no-repeat bg-cover bg-center relative"
+  id="img"
+  style="
+    background-image: url('https://images.unsplash.com/photo-1586752488885-6ce47fdfd874?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2113&q=80');
+  "
+>
+  <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
+    <div class="flex justify-center self-center z-10">
+      <div class="p-12 bg-white mx-auto rounded-2xl w-100" id="form-field">
+        <h1
+          class="mb-3 font-bold italic text-5xl heading-text text-center text-gray-800"
+        >
+          SkiStats
+        </h1>
+        <div class="col"><%- include ('../partials/message') %></div>
+        <div class="mb-4">
+          <h3 class="font-semibold text-2xl text-gray-800">Sign In</h3>
+          <p class="text-gray-500">Please sign in to your account</p>
         </div>
+        <form method="POST" action="/login">
+          <div class="space-y-5">
+            <div class="space-y-2">
+              <label class="text-sm font-medium text-gray-700 tracking-wide"
+                >Email</label
+              >
+              <input
+                class="w-full text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+                type="email"
+                id="username"
+                name="username"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div class="space-y-2">
+              <label
+                class="mb-5 text-sm font-medium text-gray-700 tracking-wide"
+              >
+                Password
+              </label>
+              <input
+                class="w-full content-center text-base px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                class="w-full flex justify-center bg-blue-400 hover:bg-blue-500 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+              >
+                Sign in
+              </button>
+            </div>
+            <div class="text-sm" id="register-field">
+              <a href="/register" class="register-link">
+                Register an account
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
 <style>
-    #img {
-        height: 100vh;
-    }
+  #img {
+    height: 100vh;
+  }
 
-    #form-field{
-        background-color: rgba(255, 255, 255, .5);
-        border:1px solid black;
-    }
+  #form-field {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid black;
+  }
 
-    @media (max-width: 480px) {
-        #form-field {
-            margin-top: 25vh;
-            margin-left: 2vw;
-            margin-right: 2vw;
-        }
+  @media (max-width: 480px) {
+    #form-field {
+      margin-top: 25vh;
+      margin-left: 2vw;
+      margin-right: 2vw;
     }
+  }
 
-    .heading-text {
-        text-shadow: 3px 3px 0px #60a5fa; /* blue shadow that matches button */
-    }
+  .heading-text {
+    text-shadow: 3px 3px 0px #60a5fa; /* blue shadow that matches button */
+  }
 
-    .register-link {
-        color: #3b82f6;
-    }
+  .register-link {
+    color: #3b82f6;
+  }
 
-    .register-link:hover {
-        color: #60a5fa;
-    }
+  .register-link:hover {
+    color: #60a5fa;
+  }
 
-    #register-field {
-        display: flex;
-        justify-content: center;
-    }
+  #register-field {
+    display: flex;
+    justify-content: center;
+  }
 
-    button {
-        margin: auto;
-    }
+  button {
+    margin: auto;
+  }
 </style>
 
 <%- include ('../partials/footer') %>

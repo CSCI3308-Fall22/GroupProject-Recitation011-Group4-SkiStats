@@ -1,7 +1,7 @@
-input{
-    height: 100%;
-    background-color: rgb(84, 189, 231);
+input {
+  height: 100%;
+  background-color: rgb(84, 189, 231);
 }
-button{
-    display:flex;
+button {
+  display: flex;
 }

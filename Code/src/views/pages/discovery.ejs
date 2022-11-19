@@ -1,64 +1,60 @@
-<%- include ('../partials/header') %>
+<%- include ('../partials/header') %> <%- include ('../partials/navbar') %> <%-
+include ('../partials/carousel_cards') %>
+<h1>discover</h1>
+<div class="drawer">
+  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+    <!-- Page content here -->
+    <label for="my-drawer" class="btn btn-primary drawer-button"
+      >Open drawer</label
+    >
+  </div>
+  <div class="drawer-side">
+    <label for="my-drawer" class="drawer-overlay"></label>
+    <ul class="menu p-4 w-80 bg-base-100 text-base-content">
+      <li>
+        <select class="select w-full max-w-xs">
+          <option>Choose a Pass...</option>
+          <option>Ikon</option>
+          <option>Epic</option>
+          <option>Both</option>
+        </select>
+      </li>
+      <li>
+        <input
+          type="text"
+          placeholder="Input State"
+          class="input input-bordered w-full max-w-xs"
+        />
+      </li>
+      <li>
+        <label class="label cursor-pointer">
+          <span class="label-text">Name</span>
+          <input type="checkbox" class="toggle" checked />
+        </label>
+      </li>
 
-
-
-
-
-
-
-  <%- include ('../partials/navbar') %>
-  <%- include ('../partials/carousel_cards') %>
-    <h1>discover</h1>
-    <div class="drawer">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content">
-        <!-- Page content here -->
-        <label for="my-drawer" class="btn btn-primary drawer-button">Open drawer</label>
-      </div>
-      <div class="drawer-side">
-        <label for="my-drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-80 bg-base-100 text-base-content">
-          <li>
-            <select class="select w-full max-w-xs">
-              <option>Choose a Pass...</option>
-              <option>Ikon</option>
-              <option>Epic</option>
-              <option>Both</option>
-            </select>
-          </li>
-          <li>
-            <input type="text" placeholder="Input State" class="input input-bordered w-full max-w-xs" />
-          </li>
-          <li>
-            <label class="label cursor-pointer">
-              <span class="label-text">Name</span>
-              <input type="checkbox" class="toggle" checked />
-            </label>
-          </li>
-          
-          <li>
-            <label class="label cursor-pointer">
-              <span class="label-text">Total Runs</span>
-              <input type="checkbox" class="toggle" checked />
-            </label>
-          </li>
-          <li>
-            <label class="label cursor-pointer">
-              <span class="label-text">Ease</span>
-              <input type="checkbox" class="toggle" checked />
-            </label>
-          </li>
-        </ul>
-      </div>
-
-    </div>
-    <style>
-      li{
-        margin: 1rem;
-      }
-      .drawer-slide{
-        background-color: aqua;
-      }
-    </style>
-    <%- include ('../partials/footer') %>
-
+      <li>
+        <label class="label cursor-pointer">
+          <span class="label-text">Total Runs</span>
+          <input type="checkbox" class="toggle" checked />
+        </label>
+      </li>
+      <li>
+        <label class="label cursor-pointer">
+          <span class="label-text">Ease</span>
+          <input type="checkbox" class="toggle" checked />
+        </label>
+      </li>
+    </ul>
+  </div>
+</div>
+<style>
+  li {
+    margin: 1rem;
+  }
+  .drawer-slide {
+    background-color: aqua;
+  }
+</style>
+<%- include ('../partials/footer') %>
