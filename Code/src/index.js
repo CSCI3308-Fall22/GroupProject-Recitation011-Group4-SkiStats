@@ -261,15 +261,7 @@ app.post("/updHotels", async (req, res) => {
     });
 });
 
-async function getMounts() {
-  const query = `SELECT * FROM ski_mountain`;
-  const { descrit } = "s";
-  db.query(query, [descrit]);
-  db.any(query).then((data) => {
-    //console.log(data);
-    return data;
-  });
-}
+
 
 app.get("/discovery", async (req, res) => {
   req.session.user = {
