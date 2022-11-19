@@ -97,6 +97,20 @@ const getHotel = async (lat, long) => {
     });
 };
 
+const getLatLong = async (city) => {
+  let url =
+    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    city +
+    "&limit=0&appid=ef09dadf66ef76c8ce41972f2a923c75";
+  return await axios
+    .get(url)
+    .then((res) => res.data[0])
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
 module.exports.getWeatherData = getWeatherData;
 module.exports.getRouteDistanceTime = getRouteDistanceTime;
 module.exports.getGoogleMapEmbed = getGoogleMapEmbed;
+module.exports.getLatLong = getLatLong;

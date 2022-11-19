@@ -81,29 +81,6 @@ app.use(function (req, res, next) {
 });
 
 let token = "null";
-let dt = [];
-
-const getLatLong = async (city) => {
-  let url =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
-    city +
-    "&limit=5&appid=ef09dadf66ef76c8ce41972f2a923c75";
-  return await axios
-    .get(url)
-    .then((res) => {
-      const dt = [res.data[0].lat, res.data[0].lon];
-      //console.log(dt)
-      return dt;
-    })
-    .catch(function (error) {
-      console.log("this has error");
-
-      console.log(error);
-      return null;
-    });
-};
-
-//getLatLong('winter park');
 
 const Accessurl = {
   url: "https://test.api.amadeus.com/v1/security/oauth2/token",
@@ -237,10 +214,14 @@ app.post("/account-settings", async (req, res) => {
 });
 
 app.post("/updHotels", async (req, res) => {
-  //console.log(req.body.city);
-  dt = await getLatLong(req.body.city);
-  if (dt == null) {
-    dt = [40.0154155, -105.270241];
+  const latlon = await api.getLatLong(req.body.city);
+
+  if (!latlon) {
+    res.render("pages/discovery", {
+      message: "No hotels found!",
+      error: true,
+    });
+    return;
   }
 
   axios(Accessurl).then((results) => {
@@ -252,15 +233,13 @@ app.post("/updHotels", async (req, res) => {
   //console.log(toki.data.access_token);
   token = toki.data.access_token;
 
-  //console.log("MY CORDINATES ARE:" + dt);
   let config = {
     headers: { Authorization: "Bearer " + token },
     params: {
-      latitude: dt[0],
-      longitude: dt[1],
+      latitude: latlon.lat,
+      longitude: latlon.lon,
     },
   };
-  //console.log("MY CORDINATES ARE:" + dt);
   //console.log("MY PARAMS ARE:" + config.params.latitude,config.params.longitude);
   const rest = await axios
     .get(
