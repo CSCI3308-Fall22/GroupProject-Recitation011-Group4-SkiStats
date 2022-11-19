@@ -237,29 +237,28 @@ app.post("/updHotels", async (req, res) => {
     )
     .then((response) => {
       const query = `SELECT * FROM ski_mountain`;
-      db.query(query)
-        .then((Mdata) => {
-          //console.log(dt[2]);
-          res.render("pages/discovery", {
-            data: response.data.data,
-            Mdata: Mdata,
-            state: dt[2],
-          });
-        })
-        
+      db.query(query).then((Mdata) => {
+        //console.log(dt[2]);
+        res.render("pages/discovery", {
+          data: response.data.data,
+          Mdata: Mdata,
+          state: dt[2],
+        });
+      });
 
       //console.log(rest.data.data);
-    }).catch((error) => {
-        const query = `SELECT * FROM ski_mountain`;
-      db.query(query)
-        .then((Mdata) => {
-          //console.log(dt[2]);
+    })
+    .catch((error) => {
+      const query = `SELECT * FROM ski_mountain`;
+      db.query(query).then((Mdata) => {
+        //console.log(dt[2]);
         res.render("pages/discovery", {
-          message: "NO HOTEL INFO FOR THIS CITY",Mdata:Mdata
+          message: "NO HOTEL INFO FOR THIS CITY",
+          Mdata: Mdata,
         });
         console.log("NO BOOMB");
       });
-});
+    });
 });
 
 async function getMounts() {
