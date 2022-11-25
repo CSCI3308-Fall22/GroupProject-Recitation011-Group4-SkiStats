@@ -381,10 +381,51 @@ app.get("/wishlist", async (req, res) => {
 
   await db
     .manyOrNone(query, [req.session.user.user_id])
-    .then((data) => {
-      res.render("pages/wishlist", {
-        data: data,
-      });
+    .then(async (data) => {
+      for (var i = 0; i < data.length; i++) {
+        data[i].iframe = api
+          .getGoogleMapEmbed(
+            500,
+            500,
+            req.session.user.home_address || "",
+            "Mt. " + data[i].name + ", " + data[i].state
+          )
+          .replaceAll("'", "&quot;");
+      }
+      if (req.session.user.home_address) {
+        origins = Array(data.length).fill(req.session.user.home_address);
+        destinations = [];
+        for (var i = 0; i < data.length; i++) {
+          destinations.push("Mt. " + data[i].name + ", " + data[i].state);
+        }
+
+        await api
+          .getRouteDistanceTime(origins, destinations, Date.now())
+          .then((distanceMatrix) => {
+            for (var i = 0; i < origins.length; i++) {
+              data[i].distance =
+                distanceMatrix.data.rows[i].elements[i].distance.text;
+              data[i].duration =
+                distanceMatrix.data.rows[i].elements[i].duration.text;
+            }
+
+            res.render("pages/wishlist", {
+              data: data,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            res.render("pages/wishlist", {
+              data: {},
+              error: true,
+              message: "Unable to generate wishlist",
+            });
+          });
+      } else {
+        res.render("pages/wishlist", {
+          data: data,
+        });
+      }
     })
     .catch((err) => {
       console.log(err);
