@@ -46,11 +46,18 @@
           <div
             class="h-full rounded-xl shadow-cla-blue bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden"
           >
-            <img
-              class="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
-              src="https://wallpaperaccess.com/full/896261.jpg"
-              alt="blog"
-            />
+            <% lat = JSON.stringify(x.geoCode.latitude); %>
+            <% long = JSON.stringify(x.geoCode.longitude); %>
+            <% img="https://wallpaperaccess.com/full/896261.jpg" ; %>
+            <% data_link = `/data?dest=${x.name.replaceAll(' ', '+')}&lat=${lat}&long=${long}&img=${img}`; %>
+            
+            <a href=<%= data_link %>>
+              <img
+                class="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
+                src=<%= img %>
+                alt="blog"
+              />
+            </a>
             <div class="p-1">
               <h2
                 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1"
@@ -66,16 +73,17 @@
               >
                 Hotel
               </h2>
-              <h1
-                class="title-font text-medium font-thin mb-3"
+              <a
+                class="link link-neutral"
                 style="
                   font-family: 'Raleway', sans-serif;
                   color: black;
                   margin-bottom: 0;
                 "
+                href=<%= data_link %>
               >
                 <%- x.name%>
-              </h1>
+              </a>
               <p
                 class="leading-relaxed flex-wrap text-xs font-arial mb-3"
                 style="font-size: 15px"
