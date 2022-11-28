@@ -322,8 +322,7 @@ app.get("/data", (req, res) => {
     req.session.user.home_address != null
       ? req.session.user.home_address
       : "Boulder, Colorado";
-
-  let image = "https://wallpaperaccess.com/full/896261.jpg";
+  let image = req.query.img;
 
   getMountainData(dest, origin, image, lat, long)
     .then((data) => {
