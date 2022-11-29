@@ -1,0 +1,31 @@
+<main>
+  <link
+    href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
+  <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
+
+    <div class="search" style="margin-left: 10rem ;">
+      <h1 class="font text-3xl mb-2" style="margin-left: px">
+        Search for a city
+      </h1>
+      <form method="POST" action="/updHotels">
+        <input
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          type="text"
+          id="city"
+          name="city"
+          style="
+            font-family: 'Raleway', sans-serif;
+            margin-bottom: 20px;
+            margin-top: 0px;
+            font-size: 20px;
+          "
+          placeholder="Where to?"
+        />
+      </form>
+      <%- include ('../partials/message') %>
+    </div>
+
+  <hr />
+</main>

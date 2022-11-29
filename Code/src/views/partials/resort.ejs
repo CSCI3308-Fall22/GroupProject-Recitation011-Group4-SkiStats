@@ -1,0 +1,80 @@
+<%if(locals.state){}else{state="colorado";} %>
+<h1 class="font text-3xl mb-2" style="margin-left: ;">Top resorts</h1>
+<div class="container px-1 py-0 mx-auto">
+  <div class="flex flex-wrap -m-4">
+    <% Mdata.forEach(x => { %> <%if(x.state.slice(1,4)== state.slice(1,4)){%>
+
+    <div class="p-2 md:w-1/3">
+      <div
+        class="h-full rounded-xl shadow-cla-blue bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden"
+      >
+        <img
+          class="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
+          src="https://www.jetsetter.com//uploads/sites/7/2018/04/7Np69-pW-1380x690.jpeg"
+          alt="blog"
+        />
+        <% if(x.ski_pass =="Ikon"){%>
+        <div class="p-1" style="background-color: rgb(6, 28, 78)">
+          <%}%> <% if(x.ski_pass =="Epic"){%>
+          <div class="p-1" style="background-color: rgb(235, 111, 3)">
+            <%}%>
+            <h2
+              class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1"
+              style="margin-top: 10px"
+            ></h2>
+            <h2
+              class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1 text-right"
+              style="margin-top: 0px"
+            >
+              <%- x.ski_pass %>
+            </h2>
+            <h2
+              class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1"
+              style="margin-top: 0px"
+            >
+              Resort
+            </h2>
+            <h1
+              class="title-font text-medium font-thin mb-3"
+              style="
+                font-family: 'Raleway', sans-serif;
+                color: rgb(212, 243, 214);
+                margin-bottom: 0;
+              "
+            >
+              <%- x.name %>
+            </h1>
+            <p
+              class="leading-relaxed flex-wrap text-xs font-arial mb-3"
+              style="font-size: 15px"
+            ></p>
+
+            <p
+              class="leading-relaxed flex-wrap text-xs mb-3"
+              style="margin-top: 3px; margin-bottom: 0; font-size: 15px"
+            >
+              Total runs: <%- x.total_runs %>
+            </p>
+            <p
+              class="leading-relaxed flex-wrap text-xs mb-3"
+              style="font-size: 15px"
+            >
+              Difficulty: <%- x.ease %>
+            </p>
+
+            <div class="flex items-center flex-wrap">
+              <button
+                name="btn"
+                id="btn"
+                style="margin-top: 0px; margin-bottom: 10px"
+              >
+                &#9825;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }})%>
+    </div>
+  </div>
+</div>
