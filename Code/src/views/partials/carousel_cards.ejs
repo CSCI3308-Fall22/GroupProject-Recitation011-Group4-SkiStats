@@ -46,17 +46,21 @@
           <div
             class="h-full rounded-xl shadow-cla-blue bg-gradient-to-r from-indigo-50 to-blue-50 overflow-hidden"
           >
-            <% lat = JSON.stringify(x.geoCode.latitude); %>
-            <% long = JSON.stringify(x.geoCode.longitude); %>
-            <% img="https://wallpaperaccess.com/full/896261.jpg" ; %>
-            <% data_link = `/data?dest=${x.name.replaceAll(' ', '+')}&lat=${lat}&long=${long}&img=${img}`; %>
-            
-            <a href=<%= data_link %>>
+            <% lat = JSON.stringify(x.geoCode.latitude); %> <% long =
+            JSON.stringify(x.geoCode.longitude); %> <%
+            img="https://wallpaperaccess.com/full/896261.jpg" ; %> <% data_link
+            = `/data?dest=${x.name.replaceAll(' ',
+            '+')}&lat=${lat}&long=${long}&img=${img}`; %>
+
+            <a href="<%" ="data_link" %
+              >>
               <img
                 class="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100"
-                src=<%= img %>
-                alt="blog"
+                src="<%"
+                ="img"
+                %
               />
+              alt="blog" />
             </a>
             <div class="p-1">
               <h2
@@ -80,9 +84,11 @@
                   color: black;
                   margin-bottom: 0;
                 "
-                href=<%= data_link %>
+                href="<%"
+                ="data_link"
+                %
               >
-                <%- x.name%>
+                > <%- x.name%>
               </a>
               <p
                 class="leading-relaxed flex-wrap text-xs font-arial mb-3"
@@ -106,9 +112,7 @@
                   name="btn"
                   id="btn"
                   style="margin-top: 0px; margin-bottom: 10px"
-                >
-                  &#9825;
-                </button>
+                ></button>
               </div>
             </div>
           </div>
@@ -204,16 +208,43 @@
                 >
                   Difficulty: <%- x.ease %>
                 </p>
+                <form method="POST" action="/wishlistadd">
+                  <input
+                    type="hidden"
+                    id="mountainid"
+                    name="mountainid"
+                    value="<%-x.id%"
+                  />>
+                  <input
+                    type="hidden"
+                    id="data"
+                    name="data"
+                    value="<%-data%>[]"
+                  />
+                  <input
+                    type="hidden"
+                    id="state"
+                    name="state"
+                    value="<%-state%"
+                  />>
+                  <input
+                    type="hidden"
+                    id="Mdata"
+                    name="Mdata"
+                    value="<%-Mdata%"
+                  />>
 
-                <div class="flex items-center flex-wrap">
-                  <button
-                    name="btn"
-                    id="btn"
-                    style="margin-top: 0px; margin-bottom: 10px"
-                  >
-                    &#9825;
-                  </button>
-                </div>
+                  <div class="flex items-center flex-wrap">
+                    <button
+                      type="submit"
+                      name="btn"
+                      id="btn"
+                      style="margin-top: 0px; margin-bottom: 10px"
+                    >
+                      &#9825;
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
