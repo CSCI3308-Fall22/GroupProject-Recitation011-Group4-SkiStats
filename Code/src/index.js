@@ -441,6 +441,22 @@ app.get("/wishlist", async (req, res) => {
     });
 });
 
+app.post("/wishlistadd", async (req, res) => {
+  const delq =
+    "delete from wishlist WHERE ski_mountain_id = $1 AND user_id = $2;";
+
+  let x = parseInt(req.body.mountainid);
+  const query =
+    "insert into wishlist (user_id,ski_mountain_id) VALUES ($1,$2) returning*;";
+  db.any(query, [req.session.user.user_id, x])
+    .then(function (data) {
+      res.redirect("/discovery");
+    })
+    .catch(function (err) {
+      db.any(delq, [x, req.session.user.user_id]);
+    });
+});
+
 app.post("/wishlist", async (req, res) => {
   await db
     .none(`DELETE FROM wishlist WHERE user_id = $1 AND ski_mountain_id = $2;`, [
